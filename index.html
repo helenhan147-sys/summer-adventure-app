@@ -68,6 +68,10 @@
       box-sizing: border-box;
     }
 
+    @media (min-width: 700px) and (max-width: 1366px) {
+      main { padding: 8px; }
+    }
+
     button { font: inherit; }
     button:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
     .text-small { font-size: 12px; }
@@ -590,14 +594,15 @@
       }
       #summer-checkin-app .map-shell {
         order: 1;
-        width: min(100%, calc((100svh - 158px) * 1.5));
+        width: 100%;
+        max-width: 1240px;
         justify-self: center;
       }
       #summer-checkin-app .bottom-zone { order: 2; padding-top: 6px; gap: 8px; }
       #summer-checkin-app .status-strip { order: 3; }
       #summer-checkin-app > section[aria-label="快速打卡"] { order: 4; }
       #summer-checkin-app > section[aria-label="打卡记录"] { order: 5; }
-      #summer-checkin-app .map-stage { max-height: calc(100svh - 158px); }
+      #summer-checkin-app .map-stage { max-height: none; }
       #summer-checkin-app .progress-head { margin-bottom: 5px; }
       #summer-checkin-app .progress-wrap { padding-top: 24px; }
       #summer-checkin-app .badge-head { margin-bottom: 4px; }
@@ -879,6 +884,7 @@
       let audioContext = null;
       let activeVoice = null;
       let backgroundStarted = false;
+      let shouldResumeBackground = false;
       let backgroundBag = [];
       let lastBackgroundIndex = -1;
       const voiceBags = { island: [], sun: [] };
@@ -1000,6 +1006,27 @@
         if (backgroundStarted || !backgroundAudio || !backgroundTracks.length) return;
         backgroundStarted = true;
         playNextBackground();
+      }
+
+      function resumeBackgroundMusic() {
+        if (!backgroundAudio || !backgroundTracks.length || !shouldResumeBackground) return;
+        backgroundStarted = true;
+        if (!backgroundAudio.src) {
+          playNextBackground();
+          return;
+        }
+        backgroundAudio.volume = activeVoice ? 0.045 : 0.18;
+        backgroundAudio.play().catch(() => {
+          backgroundStarted = false;
+        });
+      }
+
+      function pauseBackgroundMusic() {
+        if (!backgroundAudio) return;
+        shouldResumeBackground = backgroundStarted && !backgroundAudio.paused;
+        backgroundAudio.pause();
+        voiceBags.island = [];
+        voiceBags.sun = [];
       }
 
       function duckBackground(isDucked) {
@@ -1266,6 +1293,13 @@
         window.addEventListener(type, startBackgroundMusic, { once: true, passive: true });
       });
       if (backgroundAudio) backgroundAudio.addEventListener('ended', playNextBackground);
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) pauseBackgroundMusic();
+        else resumeBackgroundMusic();
+      });
+      window.addEventListener('pagehide', pauseBackgroundMusic);
+      window.addEventListener('pageshow', resumeBackgroundMusic);
+      window.addEventListener('focus', resumeBackgroundMusic);
       startBackgroundMusic();
 
       root.querySelector('#undoBtn').addEventListener('click', undoLast);
