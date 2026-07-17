@@ -1,0 +1,11 @@
+{
+  "name": "summer-adventure-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "横版暑假冒险地图打卡应用",
+  "scripts": {
+    "build": "node scripts/build-standalone.cjs",
+    "test": "node tests/smoke-test.cjs",
+    "check": "npm run build && npm test"
+  }
+}
