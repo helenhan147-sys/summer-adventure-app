@@ -29,3 +29,11 @@ npm run check
 4. 清除 Safari 网站数据、使用无痕模式或更换网址会丢失本机记录。
 
 为了让主屏幕应用和数据保存更稳定，正式使用建议配置域名和 HTTPS。
+
+## 当前部署
+
+- 访问地址：`http://101.32.209.172/summer-adventure/`
+- 服务器目录：`/var/www/summer-adventure-app/index.html`
+- Nginx 路径配置：`deploy/nginx.conf`
+
+服务器首页仍由原有 `go-search` 应用使用，暑假打卡应用只占用 `/summer-adventure/` 路径。
