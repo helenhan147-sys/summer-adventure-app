@@ -154,6 +154,10 @@ const document = `<!doctype html>
       box-sizing: border-box;
     }
 
+    @media (min-width: 700px) and (max-width: 1366px) {
+      main { padding: 8px; }
+    }
+
     button { font: inherit; }
     button:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
     .text-small { font-size: 12px; }
