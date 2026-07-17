@@ -24,6 +24,13 @@ const audioNames = [
   'real-seagull.mp3',
   'real-ship-horn.mp3'
 ];
+const heavyClickVoices = new Set([
+  "01. Crazy Dave's Greeting",
+  '2-05. Cooking Fanfare (Major Success)',
+  '5-25. Game Over',
+  '6-03. A Korok Appears',
+  "6-04. Hestu's Dance"
+]);
 let fragment = fs.readFileSync(fragmentPath, 'utf8');
 for (const imageName of imageNames) {
   const imagePath = path.join(assetRoot, imageName);
@@ -57,15 +64,24 @@ function audioMime(filePath) {
 function voiceMarkup(kind, files) {
   return files.map((filePath, index) => {
     const source = `data:${audioMime(filePath)};base64,${fs.readFileSync(filePath).toString('base64')}`;
-    return `<audio preload="auto" playsinline data-voice-kind="${kind}" data-voice-index="${index}" src="${source}"></audio>`;
+    const baseName = path.basename(filePath, path.extname(filePath));
+    const weight = kind === 'island' && heavyClickVoices.has(baseName) ? 3 : 1;
+    return `<audio preload="auto" playsinline data-voice-kind="${kind}" data-voice-index="${index}" data-voice-weight="${weight}" src="${source}"></audio>`;
   }).join('\n');
+}
+
+function relativeAsset(filePath) {
+  return path.relative(projectRoot, filePath).replace(/\\/g, '/').split('/').map(encodeURIComponent).join('/');
 }
 
 const islandVoices = listVoiceFiles('Click Island');
 const sunVoices = listVoiceFiles('Click Sun');
+const backgroundVoices = listVoiceFiles('Background');
 const voices = `${voiceMarkup('island', islandVoices)}\n${voiceMarkup('sun', sunVoices)}`;
 if (!fragment.includes('<!--VOICE_AUDIO_POOL-->')) throw new Error('Voice audio pool placeholder missing');
 fragment = fragment.replace('<!--VOICE_AUDIO_POOL-->', voices);
+if (!fragment.includes('<!--BACKGROUND_AUDIO_LIST-->')) throw new Error('Background audio placeholder missing');
+fragment = fragment.replace('<!--BACKGROUND_AUDIO_LIST-->', JSON.stringify(backgroundVoices.map(relativeAsset)));
 
 const document = `<!doctype html>
 <html lang="zh-CN">
@@ -150,4 +166,4 @@ const document = `<!doctype html>
 `;
 
 fs.writeFileSync(outputPath, document, 'utf8');
-console.log(`${outputPath} (${islandVoices.length} island voices, ${sunVoices.length} sun voices)`);
+console.log(`${outputPath} (${islandVoices.length} island voices, ${sunVoices.length} sun voices, ${backgroundVoices.length} background tracks)`);

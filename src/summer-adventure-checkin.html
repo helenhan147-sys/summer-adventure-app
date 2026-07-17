@@ -506,23 +506,38 @@
 
     @media (min-width: 700px) and (max-width: 1366px) {
       #summer-checkin-app {
-        gap: 10px;
+        gap: 8px;
         padding-left: env(safe-area-inset-left);
         padding-right: env(safe-area-inset-right);
         padding-bottom: env(safe-area-inset-bottom);
       }
       #summer-checkin-app .map-shell {
         order: 1;
-        width: min(100%, calc((100svh - 145px) * 1.5));
+        width: min(100%, calc((100svh - 158px) * 1.5));
         justify-self: center;
       }
-      #summer-checkin-app .bottom-zone { order: 2; padding-top: 8px; gap: 14px; }
+      #summer-checkin-app .bottom-zone { order: 2; padding-top: 6px; gap: 8px; }
       #summer-checkin-app .status-strip { order: 3; }
       #summer-checkin-app > section[aria-label="快速打卡"] { order: 4; }
       #summer-checkin-app > section[aria-label="打卡记录"] { order: 5; }
-      #summer-checkin-app .map-stage { max-height: calc(100svh - 145px); }
+      #summer-checkin-app .map-stage { max-height: calc(100svh - 158px); }
       #summer-checkin-app .progress-head { margin-bottom: 5px; }
-      #summer-checkin-app .progress-wrap { padding-top: 25px; }
+      #summer-checkin-app .progress-wrap { padding-top: 24px; }
+      #summer-checkin-app .badge-head { margin-bottom: 4px; }
+      #summer-checkin-app .badge-grid {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 2px;
+        scroll-snap-type: x proximity;
+      }
+      #summer-checkin-app .medal {
+        flex: 0 0 218px;
+        min-height: 58px;
+        grid-template-columns: 44px minmax(0, 1fr);
+        scroll-snap-align: start;
+      }
+      #summer-checkin-app .medal-mark { width: 44px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -589,7 +604,9 @@
   <audio id="dolphinAudio" preload="auto" src="assets/real-dolphin.wav"></audio>
   <audio id="shipAudio" preload="auto" src="assets/real-ship-horn.mp3"></audio>
   <audio id="seagullAudio" preload="auto" src="assets/real-seagull.mp3"></audio>
+  <audio id="backgroundAudio" preload="none" playsinline></audio>
   <div id="voiceAudioPool" hidden><!--VOICE_AUDIO_POOL--></div>
+  <script type="application/json" id="backgroundAudioList"><!--BACKGROUND_AUDIO_LIST--></script>
   <!-- Audio: dolphin vocalization by ZooSpensefull.com (CC BY 3.0 via OpenGameArt);
        herring gull by Moehre1992 (CC BY-SA 3.0 via Wikimedia Commons);
        steamship whistle by Work With Sounds / Konrad Gutkowski / Jonathan Nicolai
@@ -757,8 +774,13 @@
       let toastTimer = null;
       let audioContext = null;
       let activeVoice = null;
+      let backgroundStarted = false;
+      let backgroundBag = [];
+      let lastBackgroundIndex = -1;
       const voiceBags = { island: [], sun: [] };
       const lastVoiceIndex = { island: -1, sun: -1 };
+      const backgroundAudio = root.querySelector('#backgroundAudio');
+      const backgroundTracks = JSON.parse(root.querySelector('#backgroundAudioList')?.textContent || '[]');
 
       function syncUnlocks() {
         const unlocked = new Set(state.unlocked);
@@ -821,16 +843,64 @@
         else play();
       }
 
-      function refillVoiceBag(kind, length) {
-        const bag = Array.from({ length }, (_, index) => index);
+      function shuffleList(list) {
+        const bag = [...list];
         for (let index = bag.length - 1; index > 0; index -= 1) {
           const other = Math.floor(Math.random() * (index + 1));
           [bag[index], bag[other]] = [bag[other], bag[index]];
         }
+        return bag;
+      }
+
+      function refillVoiceBag(kind, pool) {
+        let bag = [];
+        pool.forEach((audio, index) => {
+          const weight = Math.max(1, Number(audio.dataset.voiceWeight) || 1);
+          for (let count = 0; count < weight; count += 1) bag.push(index);
+        });
+        bag = shuffleList(bag);
+        for (let index = 1; index < bag.length; index += 1) {
+          if (bag[index] === bag[index - 1]) {
+            const swapIndex = bag.findIndex((value, candidate) => candidate > index && value !== bag[index - 1]);
+            if (swapIndex > index) [bag[index], bag[swapIndex]] = [bag[swapIndex], bag[index]];
+          }
+        }
         if (bag.length > 1 && bag[bag.length - 1] === lastVoiceIndex[kind]) {
-          [bag[bag.length - 1], bag[0]] = [bag[0], bag[bag.length - 1]];
+          const swapIndex = bag.findIndex(value => value !== lastVoiceIndex[kind]);
+          if (swapIndex >= 0) [bag[bag.length - 1], bag[swapIndex]] = [bag[swapIndex], bag[bag.length - 1]];
         }
         voiceBags[kind] = bag;
+      }
+
+      function refillBackgroundBag() {
+        if (!backgroundTracks.length) return;
+        backgroundBag = shuffleList(backgroundTracks.map((_, index) => index));
+        if (backgroundBag.length > 1 && backgroundBag[backgroundBag.length - 1] === lastBackgroundIndex) {
+          [backgroundBag[0], backgroundBag[backgroundBag.length - 1]] = [backgroundBag[backgroundBag.length - 1], backgroundBag[0]];
+        }
+      }
+
+      function playNextBackground() {
+        if (!backgroundAudio || !backgroundTracks.length) return;
+        if (!backgroundBag.length) refillBackgroundBag();
+        const nextIndex = backgroundBag.pop();
+        lastBackgroundIndex = nextIndex;
+        backgroundAudio.src = backgroundTracks[nextIndex];
+        backgroundAudio.volume = activeVoice ? 0.045 : 0.18;
+        backgroundAudio.play().catch(() => {
+          backgroundStarted = false;
+        });
+      }
+
+      function startBackgroundMusic() {
+        if (backgroundStarted || !backgroundAudio || !backgroundTracks.length) return;
+        backgroundStarted = true;
+        playNextBackground();
+      }
+
+      function duckBackground(isDucked) {
+        if (!backgroundAudio) return;
+        backgroundAudio.volume = isDucked ? 0.045 : 0.18;
       }
 
       function playRandomVoice(kind, fallback) {
@@ -839,7 +909,7 @@
           if (fallback) fallback();
           return;
         }
-        if (!voiceBags[kind].length) refillVoiceBag(kind, pool.length);
+        if (!voiceBags[kind].length) refillVoiceBag(kind, pool);
         const voiceIndex = voiceBags[kind].pop();
         const audio = pool[voiceIndex];
         lastVoiceIndex[kind] = voiceIndex;
@@ -852,15 +922,18 @@
         audio.currentTime = 0;
         audio.volume = 1;
         activeVoice = audio;
+        duckBackground(true);
         const result = audio.play();
         if (result && typeof result.catch === 'function') {
           result.catch(() => {
             activeVoice = null;
+            duckBackground(false);
             if (fallback) fallback();
           });
         }
         audio.onended = () => {
           if (activeVoice === audio) activeVoice = null;
+          duckBackground(false);
         };
       }
 
@@ -1070,6 +1143,7 @@
       }
 
       root.addEventListener('click', event => {
+        startBackgroundMusic();
         const scenery = event.target.closest('[data-scene]');
         if (scenery && root.contains(scenery)) {
           playScene(scenery.dataset.scene);
@@ -1083,6 +1157,12 @@
         const quick = event.target.closest('[data-quick-task]');
         if (quick && root.contains(quick)) checkIn(quick.dataset.quickTask, quick);
       });
+
+      ['pointerdown', 'touchstart', 'keydown'].forEach(type => {
+        window.addEventListener(type, startBackgroundMusic, { once: true, passive: true });
+      });
+      if (backgroundAudio) backgroundAudio.addEventListener('ended', playNextBackground);
+      startBackgroundMusic();
 
       root.querySelector('#undoBtn').addEventListener('click', undoLast);
       render();
