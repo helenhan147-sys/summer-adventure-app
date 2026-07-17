@@ -32,7 +32,8 @@ npm run check
 
 ## 当前部署
 
-- 访问地址：`http://101.32.209.172/summer-adventure/`
+- iPad 推荐地址：`https://helenhan147-sys.github.io/summer-adventure-app/`
+- 服务器备用地址：`http://101.32.209.172/summer-adventure/`
 - 服务器目录：`/var/www/summer-adventure-app/index.html`
 - Nginx 路径配置：`deploy/nginx.conf`
 
