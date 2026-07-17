@@ -4,7 +4,7 @@
   "private": true,
   "description": "横版暑假冒险地图打卡应用",
   "scripts": {
-    "build": "node scripts/build-standalone.cjs",
+    "build": "node scripts/build-web.cjs",
     "test": "node tests/smoke-test.cjs",
     "check": "npm run build && npm test"
   }
