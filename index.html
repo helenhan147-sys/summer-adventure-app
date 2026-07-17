@@ -52,10 +52,14 @@
       }
     }
 
-    html { background: var(--background); }
+    html {
+      background: var(--background);
+      overflow-x: hidden;
+    }
     body {
       margin: 0;
       min-width: 320px;
+      overflow-x: hidden;
       background: var(--background);
       color: var(--foreground);
       font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
@@ -68,6 +72,7 @@
       max-width: 1480px;
       margin: 0 auto;
       padding: clamp(10px, 2vw, 24px);
+      overflow-x: hidden;
       box-sizing: border-box;
     }
 
@@ -92,11 +97,15 @@
       color: var(--foreground);
       display: grid;
       gap: 16px;
+      max-width: 100%;
+      overflow-x: clip;
       position: relative;
       width: 100%;
     }
 
     #summer-checkin-app * { box-sizing: border-box; }
+    #summer-checkin-app > section,
+    #summer-checkin-app > div { min-width: 0; }
 
     #summer-checkin-app .status-strip {
       display: flex;
@@ -138,6 +147,7 @@
       overflow: hidden;
       border-radius: 8px;
       background: var(--muted);
+      max-width: 100%;
     }
 
     #summer-checkin-app .map-stage {
@@ -519,7 +529,7 @@
     #summer-checkin-app .undo-btn:disabled { opacity: .45; cursor: default; }
 
     #summer-checkin-app .star-pop {
-      position: absolute;
+      position: fixed;
       z-index: 20;
       transform: translate(-50%, -50%);
       font-size: clamp(64px, 9vw, 118px);
@@ -914,7 +924,6 @@
 
       function popStar(sourceButton, point) {
         if (!sourceButton) return;
-        const rootBox = root.getBoundingClientRect();
         const sourceBox = sourceButton.getBoundingClientRect();
         const sourceX = point ? point.clientX : sourceBox.left + sourceBox.width / 2;
         const sourceY = point ? point.clientY : sourceBox.top + sourceBox.height / 2;
@@ -922,8 +931,8 @@
         star.className = 'star-pop';
         star.setAttribute('aria-hidden', 'true');
         star.textContent = '⭐';
-        star.style.left = `${sourceX - rootBox.left}px`;
-        star.style.top = `${sourceY - rootBox.top}px`;
+        star.style.left = `${sourceX}px`;
+        star.style.top = `${sourceY}px`;
         root.appendChild(star);
         star.addEventListener('animationend', () => star.remove(), { once: true });
         setTimeout(() => star.remove(), 1000);

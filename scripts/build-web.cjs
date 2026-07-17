@@ -135,10 +135,14 @@ const document = `<!doctype html>
       }
     }
 
-    html { background: var(--background); }
+    html {
+      background: var(--background);
+      overflow-x: hidden;
+    }
     body {
       margin: 0;
       min-width: 320px;
+      overflow-x: hidden;
       background: var(--background);
       color: var(--foreground);
       font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
@@ -151,6 +155,7 @@ const document = `<!doctype html>
       max-width: 1480px;
       margin: 0 auto;
       padding: clamp(10px, 2vw, 24px);
+      overflow-x: hidden;
       box-sizing: border-box;
     }
 
