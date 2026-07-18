@@ -211,6 +211,32 @@ const manifest = {
 const serviceWorker = `const CACHE_NAME = 'summer-adventure-pwa-v${Date.now()}';
 const SHELL_ASSETS = ${JSON.stringify(shellAssets, null, 2)};
 const RUNTIME_ASSETS = ${JSON.stringify(runtimeAssets, null, 2)};
+let backgroundCachePromise = null;
+
+function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function normalizeAsset(asset) {
+  if (typeof asset !== 'string') return null;
+  return new URL(asset, self.location.href).href;
+}
+
+async function cacheBackgroundTracks(assets) {
+  const urls = [...new Set((assets || []).map(normalizeAsset).filter(Boolean))];
+  if (!urls.length) return;
+  const cache = await caches.open(CACHE_NAME);
+  for (const url of urls) {
+    const cached = await cache.match(url);
+    if (!cached) {
+      try {
+        const response = await fetch(url, { cache: 'reload' });
+        if (response.ok) await cache.put(url, response.clone());
+      } catch (_) {}
+    }
+    await wait(850);
+  }
+}
 
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(SHELL_ASSETS)));
@@ -244,6 +270,16 @@ self.addEventListener('fetch', event => {
     }
     return response;
   })));
+});
+
+self.addEventListener('message', event => {
+  if (event.data?.type !== 'CACHE_BACKGROUND_TRACKS') return;
+  if (!backgroundCachePromise) {
+    backgroundCachePromise = cacheBackgroundTracks(event.data.assets).finally(() => {
+      backgroundCachePromise = null;
+    });
+  }
+  event.waitUntil(backgroundCachePromise);
 });
 `;
 

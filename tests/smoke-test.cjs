@@ -31,6 +31,8 @@ const required = [
   'function resumeBackgroundMusic()',
   'summer-adventure-background-queue-v1',
   'function takeBackgroundIndex()',
+  'function requestBackgroundCache()',
+  "type: 'CACHE_BACKGROUND_TRACKS'",
   'function synthFireworks()',
   "playRandomVoice('firework', synthFireworks)",
   "document.addEventListener('visibilitychange'",
@@ -58,6 +60,8 @@ if (!html.includes('rel="manifest" href="manifest.webmanifest"')) throw new Erro
 if (!html.includes("navigator.serviceWorker.register('service-worker.js')")) throw new Error('Service worker registration missing');
 if (!manifest.includes('"display": "standalone"')) throw new Error('Standalone display missing from manifest');
 if (!serviceWorker.includes('CACHE_NAME')) throw new Error('Service worker cache missing');
+if (!serviceWorker.includes("event.data?.type !== 'CACHE_BACKGROUND_TRACKS'")) throw new Error('Background cache message handler missing');
+if (!serviceWorker.includes('await wait(850)')) throw new Error('Background precache should be throttled');
 
 const taskHotspots = (html.match(/data-task="[^"]+"[^>]*><\/button>/g) || []).length;
 if (taskHotspots !== 9) throw new Error(`Expected 9 invisible task hotspots, found ${taskHotspots}`);

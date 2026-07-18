@@ -913,6 +913,7 @@
         .filter(track => track && track.src);
       const backgroundQueueKey = 'summer-adventure-background-queue-v1';
       const backgroundTrackIds = backgroundTracks.map(track => track.src);
+      let backgroundCacheRequested = false;
 
       function syncUnlocks() {
         const unlocked = new Set(state.unlocked);
@@ -1055,9 +1056,19 @@
         });
       }
 
+      function requestBackgroundCache() {
+        if (backgroundCacheRequested || !backgroundTracks.length || !navigator.serviceWorker?.controller) return;
+        backgroundCacheRequested = true;
+        navigator.serviceWorker.controller.postMessage({
+          type: 'CACHE_BACKGROUND_TRACKS',
+          assets: backgroundTracks.map(track => track.src)
+        });
+      }
+
       function startBackgroundMusic() {
         if (backgroundStarted || !backgroundAudio || !backgroundTracks.length) return;
         backgroundStarted = true;
+        requestBackgroundCache();
         if (!backgroundAudio.src) playNextBackground();
         else {
           backgroundAudio.volume = activeVoice ? 0.045 : 0.18;
