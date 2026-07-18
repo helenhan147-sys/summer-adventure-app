@@ -29,8 +29,11 @@ const required = [
   'function startBackgroundMusic()',
   'function pauseBackgroundMusic()',
   'function resumeBackgroundMusic()',
+  'function synthFireworks()',
+  "playRandomVoice('firework', synthFireworks)",
   "document.addEventListener('visibilitychange'",
   'data-voice-weight="3"',
+  'data-voice-weight="2"',
   'id="backgroundAudio"',
   'id="backgroundAudioList"',
   "playRandomVoice('island', playCheckinSound)",
@@ -58,11 +61,15 @@ if (wobblePieces !== 9) throw new Error(`Expected 9 wobble pieces, found ${wobbl
 const islandVoices = (html.match(/data-voice-kind="island"/g) || []).length;
 const sunVoices = (html.match(/data-voice-kind="sun"/g) || []).length;
 const heavyIslandVoices = (html.match(/data-voice-kind="island"[^>]+data-voice-weight="3"/g) || []).length;
+const doubleIslandVoices = (html.match(/data-voice-kind="island"[^>]+data-voice-weight="2"/g) || []).length;
+const fireworkVoices = (html.match(/data-voice-kind="firework"/g) || []).length;
 const backgroundTracks = (html.match(/assets\/Voices\/Background/g) || []).length;
-if (islandVoices !== 27) throw new Error(`Expected 27 island voices, found ${islandVoices}`);
+if (islandVoices !== 33) throw new Error(`Expected 33 island voices, found ${islandVoices}`);
 if (sunVoices !== 1) throw new Error(`Expected 1 sun voice, found ${sunVoices}`);
 if (heavyIslandVoices !== 5) throw new Error(`Expected 5 weighted island voices, found ${heavyIslandVoices}`);
-if (backgroundTracks !== 6) throw new Error(`Expected 6 background tracks, found ${backgroundTracks}`);
+if (doubleIslandVoices !== 6) throw new Error(`Expected 6 double-weight island voices, found ${doubleIslandVoices}`);
+if (fireworkVoices !== 1) throw new Error(`Expected 1 firework voice, found ${fireworkVoices}`);
+if (backgroundTracks !== 26) throw new Error(`Expected 26 background tracks, found ${backgroundTracks}`);
 
 console.log(JSON.stringify({
   syntax: 'ok',
@@ -73,6 +80,8 @@ console.log(JSON.stringify({
   islandVoices,
   sunVoices,
   heavyIslandVoices,
+  doubleIslandVoices,
+  fireworkVoices,
   backgroundTracks,
   totalGoal: 183,
   pwa: true,

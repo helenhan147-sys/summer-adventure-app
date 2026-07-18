@@ -32,6 +32,15 @@ const heavyClickVoices = new Set([
   "6-04. Hestu's Dance"
 ]);
 
+const doubleClickVoices = new Set([
+  '1-25 Launch from the Skyview Tower!',
+  '1-29 Descend to the Depths',
+  "7-31 Hestu's Dance! -Upgrade-",
+  '9-33 Get Fanfare (Important Item)',
+  '9-38 Zonai Device Dispenser',
+  '9-42 Korok Challenge Complete'
+]);
+
 let fragment = fs.readFileSync(fragmentPath, 'utf8');
 
 function listVoiceFiles(folderName) {
@@ -57,15 +66,18 @@ function relativeAsset(filePath) {
 function voiceMarkup(kind, files) {
   return files.map((filePath, index) => {
     const baseName = path.basename(filePath, path.extname(filePath));
-    const weight = kind === 'island' && heavyClickVoices.has(baseName) ? 3 : 1;
+    let weight = 1;
+    if (kind === 'island' && heavyClickVoices.has(baseName)) weight = 3;
+    else if (kind === 'island' && doubleClickVoices.has(baseName)) weight = 2;
     return `<audio preload="auto" playsinline data-voice-kind="${kind}" data-voice-index="${index}" data-voice-weight="${weight}" src="${relativeAsset(filePath)}" type="${audioMime(filePath)}"></audio>`;
   }).join('\n');
 }
 
 const islandVoices = listVoiceFiles('Click Island');
 const sunVoices = listVoiceFiles('Click Sun');
+const fireworkVoices = listVoiceFiles('Firework');
 const backgroundVoices = listVoiceFiles('Background');
-const voices = `${voiceMarkup('island', islandVoices)}\n${voiceMarkup('sun', sunVoices)}`;
+const voices = `${voiceMarkup('island', islandVoices)}\n${voiceMarkup('sun', sunVoices)}\n${voiceMarkup('firework', fireworkVoices)}`;
 if (!fragment.includes('<!--VOICE_AUDIO_POOL-->')) throw new Error('Voice audio pool placeholder missing');
 fragment = fragment.replace('<!--VOICE_AUDIO_POOL-->', voices);
 if (!fragment.includes('<!--BACKGROUND_AUDIO_LIST-->')) throw new Error('Background audio placeholder missing');
@@ -77,7 +89,8 @@ const shellAssets = [
   './manifest.webmanifest',
   ...assetNames.map(name => `./assets/${name}`),
   ...islandVoices.map(file => `./${relativeAsset(file)}`),
-  ...sunVoices.map(file => `./${relativeAsset(file)}`)
+  ...sunVoices.map(file => `./${relativeAsset(file)}`),
+  ...fireworkVoices.map(file => `./${relativeAsset(file)}`)
 ];
 const runtimeAssets = backgroundVoices.map(file => `./${relativeAsset(file)}`);
 
@@ -238,4 +251,4 @@ self.addEventListener('fetch', event => {
 fs.writeFileSync(outputPath, document, 'utf8');
 fs.writeFileSync(path.join(projectRoot, 'manifest.webmanifest'), JSON.stringify(manifest, null, 2), 'utf8');
 fs.writeFileSync(path.join(projectRoot, 'service-worker.js'), serviceWorker, 'utf8');
-console.log(`${outputPath} (${islandVoices.length} island voices, ${sunVoices.length} sun voices, ${backgroundVoices.length} background tracks, external assets)`);
+console.log(`${outputPath} (${islandVoices.length} island voices, ${sunVoices.length} sun voices, ${fireworkVoices.length} firework voices, ${backgroundVoices.length} background tracks, external assets)`);
