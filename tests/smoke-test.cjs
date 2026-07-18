@@ -29,6 +29,8 @@ const required = [
   'function startBackgroundMusic()',
   'function pauseBackgroundMusic()',
   'function resumeBackgroundMusic()',
+  'summer-adventure-background-queue-v1',
+  'function takeBackgroundIndex()',
   'function synthFireworks()',
   "playRandomVoice('firework', synthFireworks)",
   "document.addEventListener('visibilitychange'",
@@ -44,6 +46,9 @@ const required = [
 
 const missing = required.filter(item => !html.includes(item));
 if (missing.length) throw new Error(`Missing: ${missing.join(', ')}`);
+if (html.includes('\n      startBackgroundMusic();\n\n      root.querySelector')) {
+  throw new Error('Background music should wait for a user gesture before drawing from the persisted queue');
+}
 
 const imageMatch = html.match(/<img\s+src="([^"]+)"/);
 if (!imageMatch) throw new Error('Map reference missing');

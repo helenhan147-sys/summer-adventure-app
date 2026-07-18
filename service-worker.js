@@ -1,4 +1,4 @@
-const CACHE_NAME = 'summer-adventure-pwa-v1784397869595';
+const CACHE_NAME = 'summer-adventure-pwa-v1784399223110';
 const SHELL_ASSETS = [
   "./",
   "./index.html",

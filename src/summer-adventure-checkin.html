@@ -782,14 +782,14 @@
       let activeVoice = null;
       let backgroundStarted = false;
       let shouldResumeBackground = false;
-      let backgroundBag = [];
-      let lastBackgroundIndex = -1;
       const voiceBags = { island: [], sun: [], firework: [] };
       const lastVoiceIndex = { island: -1, sun: -1, firework: -1 };
       const backgroundAudio = root.querySelector('#backgroundAudio');
       const backgroundTracks = JSON.parse(root.querySelector('#backgroundAudioList')?.textContent || '[]')
         .map(track => typeof track === 'string' ? { src: track, bytes: 0 } : track)
         .filter(track => track && track.src);
+      const backgroundQueueKey = 'summer-adventure-background-queue-v1';
+      const backgroundTrackIds = backgroundTracks.map(track => track.src);
 
       function syncUnlocks() {
         const unlocked = new Set(state.unlocked);
@@ -880,19 +880,51 @@
         voiceBags[kind] = bag;
       }
 
-      function refillBackgroundBag() {
-        if (!backgroundTracks.length) return;
-        backgroundBag = shuffleList(backgroundTracks.map((_, index) => index));
-        if (backgroundBag.length > 1 && backgroundBag[backgroundBag.length - 1] === lastBackgroundIndex) {
-          [backgroundBag[0], backgroundBag[backgroundBag.length - 1]] = [backgroundBag[backgroundBag.length - 1], backgroundBag[0]];
+      function readBackgroundQueue() {
+        try {
+          const saved = JSON.parse(localStorage.getItem(backgroundQueueKey));
+          if (!saved || !Array.isArray(saved.queue) || !Array.isArray(saved.tracks)) return null;
+          if (saved.tracks.join('|') !== backgroundTrackIds.join('|')) return null;
+          return {
+            queue: saved.queue.filter(index => Number.isInteger(index) && backgroundTracks[index]),
+            last: Number.isInteger(saved.last) ? saved.last : -1
+          };
+        } catch (_) {
+          return null;
         }
+      }
+
+      function writeBackgroundQueue(queue, last) {
+        try {
+          localStorage.setItem(backgroundQueueKey, JSON.stringify({ tracks: backgroundTrackIds, queue, last }));
+        } catch (_) {}
+      }
+
+      function createBackgroundQueue(last = -1) {
+        const queue = shuffleList(backgroundTracks.map((_, index) => index));
+        if (queue.length > 1 && queue[queue.length - 1] === last) {
+          const swapIndex = queue.findIndex(index => index !== last);
+          if (swapIndex >= 0) [queue[queue.length - 1], queue[swapIndex]] = [queue[swapIndex], queue[queue.length - 1]];
+        }
+        return queue;
+      }
+
+      function takeBackgroundIndex() {
+        if (!backgroundTracks.length) return -1;
+        const saved = readBackgroundQueue();
+        let queue = saved?.queue || [];
+        let last = saved?.last ?? -1;
+        if (!queue.length) queue = createBackgroundQueue(last);
+        const nextIndex = queue.pop();
+        last = nextIndex;
+        writeBackgroundQueue(queue, last);
+        return nextIndex;
       }
 
       function playNextBackground() {
         if (!backgroundAudio || !backgroundTracks.length) return;
-        if (!backgroundBag.length) refillBackgroundBag();
-        const nextIndex = backgroundBag.pop();
-        lastBackgroundIndex = nextIndex;
+        const nextIndex = takeBackgroundIndex();
+        if (nextIndex < 0) return;
         backgroundAudio.src = backgroundTracks[nextIndex].src;
         backgroundAudio.volume = activeVoice ? 0.045 : 0.18;
         backgroundAudio.play().catch(() => {
@@ -903,7 +935,13 @@
       function startBackgroundMusic() {
         if (backgroundStarted || !backgroundAudio || !backgroundTracks.length) return;
         backgroundStarted = true;
-        playNextBackground();
+        if (!backgroundAudio.src) playNextBackground();
+        else {
+          backgroundAudio.volume = activeVoice ? 0.045 : 0.18;
+          backgroundAudio.play().catch(() => {
+            backgroundStarted = false;
+          });
+        }
       }
 
       function resumeBackgroundMusic() {
@@ -1195,7 +1233,10 @@
       ['pointerdown', 'touchstart', 'keydown'].forEach(type => {
         window.addEventListener(type, startBackgroundMusic, { once: true, passive: true });
       });
-      if (backgroundAudio) backgroundAudio.addEventListener('ended', playNextBackground);
+      if (backgroundAudio) backgroundAudio.addEventListener('ended', () => {
+        backgroundStarted = false;
+        shouldResumeBackground = false;
+      });
       document.addEventListener('visibilitychange', () => {
         if (document.hidden) pauseBackgroundMusic();
         else resumeBackgroundMusic();
@@ -1203,7 +1244,6 @@
       window.addEventListener('pagehide', pauseBackgroundMusic);
       window.addEventListener('pageshow', resumeBackgroundMusic);
       window.addEventListener('focus', resumeBackgroundMusic);
-      startBackgroundMusic();
 
       root.querySelector('#undoBtn').addEventListener('click', undoLast);
       render();
