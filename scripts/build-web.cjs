@@ -69,7 +69,7 @@ function voiceMarkup(kind, files) {
     let weight = 1;
     if (kind === 'island' && heavyClickVoices.has(baseName)) weight = 3;
     else if (kind === 'island' && doubleClickVoices.has(baseName)) weight = 2;
-    return `<audio preload="auto" playsinline data-voice-kind="${kind}" data-voice-index="${index}" data-voice-weight="${weight}" src="${relativeAsset(filePath)}" type="${audioMime(filePath)}"></audio>`;
+    return `<audio preload="none" playsinline data-voice-kind="${kind}" data-voice-index="${index}" data-voice-weight="${weight}" src="${relativeAsset(filePath)}" type="${audioMime(filePath)}"></audio>`;
   }).join('\n');
 }
 
@@ -81,18 +81,17 @@ const voices = `${voiceMarkup('island', islandVoices)}\n${voiceMarkup('sun', sun
 if (!fragment.includes('<!--VOICE_AUDIO_POOL-->')) throw new Error('Voice audio pool placeholder missing');
 fragment = fragment.replace('<!--VOICE_AUDIO_POOL-->', voices);
 if (!fragment.includes('<!--BACKGROUND_AUDIO_LIST-->')) throw new Error('Background audio placeholder missing');
-fragment = fragment.replace('<!--BACKGROUND_AUDIO_LIST-->', JSON.stringify(backgroundVoices.map(relativeAsset)));
+const backgroundTrackManifest = backgroundVoices
+  .map(file => ({ src: relativeAsset(file), bytes: fs.statSync(file).size }));
+fragment = fragment.replace('<!--BACKGROUND_AUDIO_LIST-->', JSON.stringify(backgroundTrackManifest));
 
 const shellAssets = [
   './',
   './index.html',
   './manifest.webmanifest',
-  ...assetNames.map(name => `./assets/${name}`),
-  ...islandVoices.map(file => `./${relativeAsset(file)}`),
-  ...sunVoices.map(file => `./${relativeAsset(file)}`),
-  ...fireworkVoices.map(file => `./${relativeAsset(file)}`)
+  ...assetNames.map(name => `./assets/${name}`)
 ];
-const runtimeAssets = backgroundVoices.map(file => `./${relativeAsset(file)}`);
+const runtimeAssets = [];
 
 const document = `<!doctype html>
 <html lang="zh-CN">

@@ -87,7 +87,7 @@
   </style>
 </head>
 <body>
-  <main>﻿<div id="summer-checkin-app">
+  <main><div id="summer-checkin-app">
   <style>
     #summer-checkin-app {
       --app-soft: color-mix(in srgb, var(--card) 88%, var(--viz-series-1) 12%);
@@ -486,7 +486,7 @@
     }
 
     #summer-checkin-app .medal.unlocked .medal-mark::after {
-      content: "â˜…";
+      content: "★";
       position: absolute;
       right: -5px;
       top: -7px;
@@ -541,7 +541,7 @@
 
     #summer-checkin-app .star-pop::before,
     #summer-checkin-app .star-pop::after {
-      content: "âœ¦";
+      content: "✦";
       position: absolute;
       color: var(--primary);
       font-size: .34em;
@@ -613,8 +613,8 @@
       }
       #summer-checkin-app .bottom-zone { order: 2; padding-top: 6px; gap: 8px; }
       #summer-checkin-app .status-strip { order: 3; }
-      #summer-checkin-app > section[aria-label="å¿«é€Ÿæ‰“å¡"] { order: 4; }
-      #summer-checkin-app > section[aria-label="æ‰“å¡è®°å½•"] { order: 5; }
+      #summer-checkin-app > section[aria-label="快速打卡"] { order: 4; }
+      #summer-checkin-app > section[aria-label="打卡记录"] { order: 5; }
       #summer-checkin-app .map-stage { max-height: none; }
       #summer-checkin-app .progress-head { margin-bottom: 5px; }
       #summer-checkin-app .progress-wrap { padding-top: 24px; }
@@ -647,21 +647,21 @@
     }
   </style>
 
-  <section class="status-strip" aria-label="å†’é™©çŠ¶æ€">
+  <section class="status-strip" aria-label="冒险状态">
     <div class="status-copy">
-      <strong>å†’é™©è¿›åº¦</strong>
-      <span class="text-muted" id="statusText">ä»Žèµ·ç‚¹å‡ºå‘</span>
+      <strong>冒险进度</strong>
+      <span class="text-muted" id="statusText">从起点出发</span>
     </div>
     <div class="reward-totals">
-      <span class="reward-chip">â­ <strong id="starCount">0</strong> é¢—</span>
-      <span class="reward-chip">ðŸš© <strong id="flagCount">0</strong> é¢</span>
-      <span class="reward-chip text-small">æ¯ 5 é¢—æ˜Ÿæ˜Ÿå…‘æ¢ 1 é¢å°æ——</span>
+      <span class="reward-chip">⭐ <strong id="starCount">0</strong> 颗</span>
+      <span class="reward-chip">🚩 <strong id="flagCount">0</strong> 面</span>
+      <span class="reward-chip text-small">每 5 颗星星兑换 1 面小旗</span>
     </div>
   </section>
 
-  <section class="map-shell" aria-label="æš‘å‡å†’é™©åœ°å›¾">
+  <section class="map-shell" aria-label="暑假冒险地图">
     <div class="map-stage" id="mapStage">
-      <img src="assets/map-background.webp" alt="æš‘å‡å†’é™©åœ°å›¾ï¼ŒåŒ…å«è¿åŠ¨å²›ã€è‹±è¯­æ¹¾ã€è®¡ç®—å±±ã€å›´æ£‹æ´žã€çœ‹å›¾å†™è¯ç€‘å¸ƒã€ç»ƒå­—æ¡¥ã€æ€ç»´æ£®æž—ã€è¶£å‘³ä»»åŠ¡å±‹å’Œç»ˆç‚¹ã€‚">
+      <img src="assets/map-background.webp" alt="暑假冒险地图，包含运动岛、英语湾、计算山、围棋洞、看图写话瀑布、练字桥、思维森林、趣味任务屋和终点。">
 
       <span class="wobble-piece" style="--left:20%;--top:0%;--width:28%;--height:35%;--duration:2.55s;--delay:-.4s"><img src="assets/wobble-sport.webp" alt="" aria-hidden="true"></span>
       <span class="wobble-piece" style="--left:45%;--top:0%;--width:28%;--height:35%;--duration:2.8s;--delay:-1.7s"><img src="assets/wobble-english.webp" alt="" aria-hidden="true"></span>
@@ -673,23 +673,23 @@
       <span class="wobble-piece" style="--left:28%;--top:62%;--width:34%;--height:38%;--duration:2.95s;--delay:-1.9s"><img src="assets/wobble-fun.webp" alt="" aria-hidden="true"></span>
       <span class="wobble-piece" style="--left:67%;--top:64%;--width:33%;--height:36%;--duration:2.68s;--delay:-.7s"><img src="assets/wobble-finish.webp" alt="" aria-hidden="true"></span>
 
-      <button class="scenery-hotspot" style="--x:6%;--y:10%;--w:10%;--h:15%" data-scene="sun" aria-label="ç‚¹å‡»å¤ªé˜³ï¼Œå¬ä¸€å¥è‹±æ–‡å¤¸å¥–"></button>
-      <button class="scenery-hotspot" style="--x:18%;--y:12%;--w:9%;--h:9%" data-scene="seagull" aria-label="ç‚¹å‡»æµ·é¸¥ï¼Œæ’­æ”¾æµ·é¸¥å«å£°"></button>
-      <button class="scenery-hotspot" style="--x:76%;--y:12%;--w:10%;--h:13%" data-scene="ship" aria-label="ç‚¹å‡»å¸†èˆ¹ï¼Œæ’­æ”¾èˆ¹é¸£ç¬›å£°"></button>
-      <button class="scenery-hotspot" style="--x:7%;--y:85%;--w:11%;--h:17%" data-scene="ship" aria-label="ç‚¹å‡»å¸†èˆ¹ï¼Œæ’­æ”¾èˆ¹é¸£ç¬›å£°"></button>
-      <button class="scenery-hotspot" style="--x:94%;--y:40%;--w:9%;--h:13%" data-scene="dolphin" aria-label="ç‚¹å‡»æµ·è±šï¼Œæ’­æ”¾æµ·è±šå«å£°"></button>
-      <button class="scenery-hotspot" style="--x:23%;--y:87%;--w:10%;--h:12%" data-scene="dolphin" aria-label="ç‚¹å‡»æµ·è±šï¼Œæ’­æ”¾æµ·è±šå«å£°"></button>
-      <button class="scenery-hotspot" style="--x:94%;--y:70%;--w:11%;--h:17%" data-scene="fireworks" aria-label="ç‚¹å‡»çƒŸèŠ±ï¼Œæ’­æ”¾çƒŸèŠ±çˆ†ç‚¸å£°"></button>
+      <button class="scenery-hotspot" style="--x:6%;--y:10%;--w:10%;--h:15%" data-scene="sun" aria-label="点击太阳，听一句英文夸奖"></button>
+      <button class="scenery-hotspot" style="--x:18%;--y:12%;--w:9%;--h:9%" data-scene="seagull" aria-label="点击海鸥，播放海鸥叫声"></button>
+      <button class="scenery-hotspot" style="--x:76%;--y:12%;--w:10%;--h:13%" data-scene="ship" aria-label="点击帆船，播放船鸣笛声"></button>
+      <button class="scenery-hotspot" style="--x:7%;--y:85%;--w:11%;--h:17%" data-scene="ship" aria-label="点击帆船，播放船鸣笛声"></button>
+      <button class="scenery-hotspot" style="--x:94%;--y:40%;--w:9%;--h:13%" data-scene="dolphin" aria-label="点击海豚，播放海豚叫声"></button>
+      <button class="scenery-hotspot" style="--x:23%;--y:87%;--w:10%;--h:12%" data-scene="dolphin" aria-label="点击海豚，播放海豚叫声"></button>
+      <button class="scenery-hotspot" style="--x:94%;--y:70%;--w:11%;--h:17%" data-scene="fireworks" aria-label="点击烟花，播放烟花爆炸声"></button>
 
-      <button class="hotspot" style="--x:34%;--y:18%" data-task="sport" aria-label="ä½“è‚²æ‰“å¡ï¼Œè¿åŠ¨å²›å‰è¿›ä¸€æ­¥"></button>
-      <button class="hotspot" style="--x:59%;--y:18%" data-task="english" aria-label="è‹±è¯­æ‰“å¡ï¼Œè‹±è¯­æ¹¾å‰è¿›ä¸€æ­¥"></button>
-      <button class="hotspot" style="--x:85%;--y:24%" data-task="calculation" aria-label="æ•°å­¦è®¡ç®—æ‰“å¡ï¼Œè®¡ç®—å±±å‰è¿›ä¸€æ­¥"></button>
-      <button class="hotspot" style="--x:28%;--y:41%" data-task="go" aria-label="å›´æ£‹æ­»æ´»æ‰“å¡ï¼Œå›´æ£‹æ´žå‰è¿›ä¸€æ­¥"></button>
-      <button class="hotspot" style="--x:16%;--y:65%" data-task="picture" aria-label="çœ‹å›¾å†™è¯æ‰“å¡ï¼Œç€‘å¸ƒå‰è¿›ä¸€æ­¥"></button>
-      <button class="hotspot" style="--x:53%;--y:61%" data-task="writing" aria-label="è¯­æ–‡ç»ƒå­—æ‰“å¡ï¼Œç»ƒå­—æ¡¥å‰è¿›ä¸€æ­¥"></button>
-      <button class="hotspot" style="--x:83%;--y:56%" data-task="thinking" aria-label="æ•°å­¦ç»ƒä¹ æ‰“å¡ï¼Œæ€ç»´æ£®æž—å‰è¿›ä¸€æ­¥"></button>
-      <button class="hotspot" style="--x:45%;--y:84%" data-task="fun" aria-label="è¶£å‘³å°ä»»åŠ¡æ‰“å¡ï¼Œä»»åŠ¡å±‹å‰è¿›ä¸€æ­¥"></button>
-      <button class="hotspot" style="--x:8%;--y:84%" data-task="outdoor" aria-label="å‘¨å…­æˆ·å¤–æ‰“å¡ï¼Œå‰è¿›ä¸€æ­¥"></button>
+      <button class="hotspot" style="--x:34%;--y:18%" data-task="sport" aria-label="体育打卡，运动岛前进一步"></button>
+      <button class="hotspot" style="--x:59%;--y:18%" data-task="english" aria-label="英语打卡，英语湾前进一步"></button>
+      <button class="hotspot" style="--x:85%;--y:24%" data-task="calculation" aria-label="数学计算打卡，计算山前进一步"></button>
+      <button class="hotspot" style="--x:28%;--y:41%" data-task="go" aria-label="围棋死活打卡，围棋洞前进一步"></button>
+      <button class="hotspot" style="--x:16%;--y:65%" data-task="picture" aria-label="看图写话打卡，瀑布前进一步"></button>
+      <button class="hotspot" style="--x:53%;--y:61%" data-task="writing" aria-label="语文练字打卡，练字桥前进一步"></button>
+      <button class="hotspot" style="--x:83%;--y:56%" data-task="thinking" aria-label="数学练习打卡，思维森林前进一步"></button>
+      <button class="hotspot" style="--x:45%;--y:84%" data-task="fun" aria-label="趣味小任务打卡，任务屋前进一步"></button>
+      <button class="hotspot" style="--x:8%;--y:84%" data-task="outdoor" aria-label="周六户外打卡，前进一步"></button>
 
       <div class="pig" id="pig" aria-hidden="true"><img src="assets/pig-cape.png" alt=""></div>
       <div class="map-toast" id="mapToast" aria-live="polite"></div>
@@ -700,56 +700,56 @@
   <audio id="shipAudio" preload="auto" src="assets/real-ship-horn.mp3"></audio>
   <audio id="seagullAudio" preload="auto" src="assets/real-seagull.mp3"></audio>
   <audio id="backgroundAudio" preload="none" playsinline></audio>
-  <div id="voiceAudioPool" hidden><audio preload="auto" playsinline data-voice-kind="island" data-voice-index="0" data-voice-weight="2" src="assets/Voices/Click%20Island/1-25%20Launch%20from%20the%20Skyview%20Tower!.m4a" type="audio/mp4"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="1" data-voice-weight="2" src="assets/Voices/Click%20Island/1-29%20Descend%20to%20the%20Depths.m4a" type="audio/mp4"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="2" data-voice-weight="3" src="assets/Voices/Click%20Island/01.%20Crazy%20Dave's%20Greeting.m4a" type="audio/mp4"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="3" data-voice-weight="3" src="assets/Voices/Click%20Island/2-05.%20Cooking%20Fanfare%20(Major%20Success).m4a" type="audio/mp4"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="4" data-voice-weight="3" src="assets/Voices/Click%20Island/5-25.%20Game%20Over.m4a" type="audio/mp4"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="5" data-voice-weight="3" src="assets/Voices/Click%20Island/6-03.%20A%20Korok%20Appears.m4a" type="audio/mp4"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="6" data-voice-weight="3" src="assets/Voices/Click%20Island/6-04.%20Hestu's%20Dance.m4a" type="audio/mp4"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="7" data-voice-weight="2" src="assets/Voices/Click%20Island/7-31%20Hestu's%20Dance!%20-Upgrade-.m4a" type="audio/mp4"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="8" data-voice-weight="2" src="assets/Voices/Click%20Island/9-33%20Get%20Fanfare%20(Important%20Item).m4a" type="audio/mp4"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="9" data-voice-weight="2" src="assets/Voices/Click%20Island/9-38%20Zonai%20Device%20Dispenser.m4a" type="audio/mp4"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="10" data-voice-weight="2" src="assets/Voices/Click%20Island/9-42%20Korok%20Challenge%20Complete.m4a" type="audio/mp4"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="11" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_17_03_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="12" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_17_52_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="13" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_18_27_Crazy%20Eddie_pvc_sp101_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="14" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_19_02_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="15" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_19_30_Crazy%20Eddie_pvc_sp101_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="16" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_20_20_Crazy%20Eddie_pvc_sp101_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="17" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_20_49_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="18" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_21_09_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="19" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_21_28_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="20" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_21_47_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="21" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_22_48_Crazy%20Eddie_pvc_sp101_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="22" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_23_11_Crazy%20Eddie_pvc_sp101_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="23" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_23_40_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="24" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_24_10_Crazy%20Eddie_pvc_sp101_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="25" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_24_21_Crazy%20Eddie_pvc_sp101_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="26" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_24_33_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="27" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_24_53_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="28" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_34_34_Hinata%20-%20Inviting%2C%20Smooth%20and%20Measured_pvc_sp100_s93_sb60_se49_b_m2.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="29" data-voice-weight="1" src="assets/Voices/Click%20Island/JPMale_01.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="30" data-voice-weight="1" src="assets/Voices/Click%20Island/JPMale_02.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="31" data-voice-weight="1" src="assets/Voices/Click%20Island/JPMale_03.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="island" data-voice-index="32" data-voice-weight="1" src="assets/Voices/Click%20Island/JPMale_04.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="sun" data-voice-index="0" data-voice-weight="1" src="assets/Voices/Click%20Sun/ElevenLabs_2026-07-17T05_28_03_Crazy%20Eddie_pvc_sp70_s0_sb62_se68_b_m2.mp3" type="audio/mpeg"></audio>
-<audio preload="auto" playsinline data-voice-kind="firework" data-voice-index="0" data-voice-weight="1" src="assets/Voices/Firework/dragon-studio-fireworks-07-419025.m4a" type="audio/mp4"></audio></div>
-  <script type="application/json" id="backgroundAudioList">["assets/Voices/Background/1-06%20Opening.m4a","assets/Voices/Background/1-12%20Shrine%20of%20Light.m4a","assets/Voices/Background/1-43.%20Great%20Fairy%20Fountain.m4a","assets/Voices/Background/2-05%20Highlands.m4a","assets/Voices/Background/2-17%20Wind%20Temple-%201st%20Stage.m4a","assets/Voices/Background/2-25%20Heart%20Container%20Appears.m4a","assets/Voices/Background/2-31%20Rito%20Village%20(Day).m4a","assets/Voices/Background/2-35%20The%20Arrogant%20Master%20Kohga.m4a","assets/Voices/Background/3-14.%20Hinox%20Battle.m4a","assets/Voices/Background/3-36%20Furious%20Master%20Kohga.m4a","assets/Voices/Background/4-01%20Riding%20(Day).m4a","assets/Voices/Background/4-05.%20Battle%203%20(Field).m4a","assets/Voices/Background/4-28%20Zora's%20Domain%20(Day).m4a","assets/Voices/Background/4-36%20The%20Return%20of%20Master%20Kohga-%20Battle.m4a","assets/Voices/Background/5-09%20Kara%20Kara%20Bazaar%20Defense%20Battle.m4a","assets/Voices/Background/5-14.%20Goron%20City.m4a","assets/Voices/Background/5-28%20Gerudo%20Town%20(Day).m4a","assets/Voices/Background/6-06%20Lurelin%20Village%20(Day).m4a","assets/Voices/Background/6-11%20Lookout%20Landing%20Shrouded%20in%20Dark%20Clouds.m4a","assets/Voices/Background/6-19%20Lookout%20Landing%20(Four%20Sages%20Gathered).m4a","assets/Voices/Background/6-20%20Kakariko%20Village%20(Day).m4a","assets/Voices/Background/8-13.%20Hateno%20Village%20(Day).m4a","assets/Voices/Background/9-05%20Tarrey%20Town%20(Day).m4a","assets/Voices/Background/9-16%20Mini-Game%20(Yiga%20Clan%20Training).m4a","assets/Voices/Background/9-16.%20Korok%20Forest%20(Early%20Night%20to%20Day).m4a","assets/Voices/Background/9-25%20Stables.m4a"]</script>
+  <div id="voiceAudioPool" hidden><audio preload="none" playsinline data-voice-kind="island" data-voice-index="0" data-voice-weight="2" src="assets/Voices/Click%20Island/1-25%20Launch%20from%20the%20Skyview%20Tower!.m4a" type="audio/mp4"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="1" data-voice-weight="2" src="assets/Voices/Click%20Island/1-29%20Descend%20to%20the%20Depths.m4a" type="audio/mp4"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="2" data-voice-weight="3" src="assets/Voices/Click%20Island/01.%20Crazy%20Dave's%20Greeting.m4a" type="audio/mp4"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="3" data-voice-weight="3" src="assets/Voices/Click%20Island/2-05.%20Cooking%20Fanfare%20(Major%20Success).m4a" type="audio/mp4"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="4" data-voice-weight="3" src="assets/Voices/Click%20Island/5-25.%20Game%20Over.m4a" type="audio/mp4"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="5" data-voice-weight="3" src="assets/Voices/Click%20Island/6-03.%20A%20Korok%20Appears.m4a" type="audio/mp4"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="6" data-voice-weight="3" src="assets/Voices/Click%20Island/6-04.%20Hestu's%20Dance.m4a" type="audio/mp4"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="7" data-voice-weight="2" src="assets/Voices/Click%20Island/7-31%20Hestu's%20Dance!%20-Upgrade-.m4a" type="audio/mp4"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="8" data-voice-weight="2" src="assets/Voices/Click%20Island/9-33%20Get%20Fanfare%20(Important%20Item).m4a" type="audio/mp4"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="9" data-voice-weight="2" src="assets/Voices/Click%20Island/9-38%20Zonai%20Device%20Dispenser.m4a" type="audio/mp4"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="10" data-voice-weight="2" src="assets/Voices/Click%20Island/9-42%20Korok%20Challenge%20Complete.m4a" type="audio/mp4"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="11" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_17_03_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="12" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_17_52_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="13" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_18_27_Crazy%20Eddie_pvc_sp101_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="14" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_19_02_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="15" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_19_30_Crazy%20Eddie_pvc_sp101_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="16" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_20_20_Crazy%20Eddie_pvc_sp101_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="17" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_20_49_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="18" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_21_09_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="19" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_21_28_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="20" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_21_47_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="21" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_22_48_Crazy%20Eddie_pvc_sp101_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="22" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_23_11_Crazy%20Eddie_pvc_sp101_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="23" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_23_40_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="24" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_24_10_Crazy%20Eddie_pvc_sp101_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="25" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_24_21_Crazy%20Eddie_pvc_sp101_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="26" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_24_33_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="27" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_24_53_female%20teacher%20talking%20to%20kids_gen_sp100_s50_sb75_se0_b_m2.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="28" data-voice-weight="1" src="assets/Voices/Click%20Island/ElevenLabs_2026-07-17T05_34_34_Hinata%20-%20Inviting%2C%20Smooth%20and%20Measured_pvc_sp100_s93_sb60_se49_b_m2.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="29" data-voice-weight="1" src="assets/Voices/Click%20Island/JPMale_01.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="30" data-voice-weight="1" src="assets/Voices/Click%20Island/JPMale_02.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="31" data-voice-weight="1" src="assets/Voices/Click%20Island/JPMale_03.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="island" data-voice-index="32" data-voice-weight="1" src="assets/Voices/Click%20Island/JPMale_04.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="sun" data-voice-index="0" data-voice-weight="1" src="assets/Voices/Click%20Sun/ElevenLabs_2026-07-17T05_28_03_Crazy%20Eddie_pvc_sp70_s0_sb62_se68_b_m2.mp3" type="audio/mpeg"></audio>
+<audio preload="none" playsinline data-voice-kind="firework" data-voice-index="0" data-voice-weight="1" src="assets/Voices/Firework/dragon-studio-fireworks-07-419025.m4a" type="audio/mp4"></audio></div>
+  <script type="application/json" id="backgroundAudioList">[{"src":"assets/Voices/Background/1-06%20Opening.m4a","bytes":922558},{"src":"assets/Voices/Background/1-12%20Shrine%20of%20Light.m4a","bytes":5630566},{"src":"assets/Voices/Background/1-43.%20Great%20Fairy%20Fountain.m4a","bytes":1211083},{"src":"assets/Voices/Background/2-05%20Highlands.m4a","bytes":874313},{"src":"assets/Voices/Background/2-17%20Wind%20Temple-%201st%20Stage.m4a","bytes":1301557},{"src":"assets/Voices/Background/2-25%20Heart%20Container%20Appears.m4a","bytes":388067},{"src":"assets/Voices/Background/2-31%20Rito%20Village%20(Day).m4a","bytes":1707251},{"src":"assets/Voices/Background/2-35%20The%20Arrogant%20Master%20Kohga.m4a","bytes":606581},{"src":"assets/Voices/Background/3-14.%20Hinox%20Battle.m4a","bytes":2682593},{"src":"assets/Voices/Background/3-36%20Furious%20Master%20Kohga.m4a","bytes":1132696},{"src":"assets/Voices/Background/4-01%20Riding%20(Day).m4a","bytes":1356706},{"src":"assets/Voices/Background/4-05.%20Battle%203%20(Field).m4a","bytes":2394674},{"src":"assets/Voices/Background/4-28%20Zora's%20Domain%20(Day).m4a","bytes":1538154},{"src":"assets/Voices/Background/4-36%20The%20Return%20of%20Master%20Kohga-%20Battle.m4a","bytes":1490515},{"src":"assets/Voices/Background/5-09%20Kara%20Kara%20Bazaar%20Defense%20Battle.m4a","bytes":2498603},{"src":"assets/Voices/Background/5-14.%20Goron%20City.m4a","bytes":4066724},{"src":"assets/Voices/Background/5-28%20Gerudo%20Town%20(Day).m4a","bytes":1881939},{"src":"assets/Voices/Background/6-06%20Lurelin%20Village%20(Day).m4a","bytes":1446716},{"src":"assets/Voices/Background/6-11%20Lookout%20Landing%20Shrouded%20in%20Dark%20Clouds.m4a","bytes":2258964},{"src":"assets/Voices/Background/6-19%20Lookout%20Landing%20(Four%20Sages%20Gathered).m4a","bytes":789501},{"src":"assets/Voices/Background/6-20%20Kakariko%20Village%20(Day).m4a","bytes":1615739},{"src":"assets/Voices/Background/8-13.%20Hateno%20Village%20(Day).m4a","bytes":2566850},{"src":"assets/Voices/Background/9-05%20Tarrey%20Town%20(Day).m4a","bytes":1415677},{"src":"assets/Voices/Background/9-16%20Mini-Game%20(Yiga%20Clan%20Training).m4a","bytes":1820421},{"src":"assets/Voices/Background/9-16.%20Korok%20Forest%20(Early%20Night%20to%20Day).m4a","bytes":1528451},{"src":"assets/Voices/Background/9-25%20Stables.m4a","bytes":1749615}]</script>
   <!-- Audio: dolphin vocalization by ZooSpensefull.com (CC BY 3.0 via OpenGameArt);
        herring gull by Moehre1992 (CC BY-SA 3.0 via Wikimedia Commons);
        steamship whistle by Work With Sounds / Konrad Gutkowski / Jonathan Nicolai
        (CC BY 4.0 via Wikimedia Commons). -->
 
-  <section class="bottom-zone" aria-label="æ€»è¿›åº¦å’Œæˆå°±å‹‹ç« ">
+  <section class="bottom-zone" aria-label="总进度和成就勋章">
     <div>
       <div class="progress-head">
-        <strong>æ€»è¿›åº¦</strong>
-        <span class="text-muted" id="progressDetail">0 / 183 æ­¥</span>
+        <strong>总进度</strong>
+        <span class="text-muted" id="progressDetail">0 / 183 步</span>
       </div>
       <div class="progress-wrap">
-        <div class="flag-rail" id="flagRail" aria-label="æ¯å®Œæˆ 5 æ¬¡æ‰“å¡ç‚¹äº®ä¸€é¢å°æ——"></div>
-        <div class="progress-track" role="progressbar" aria-label="æš‘å‡ä»»åŠ¡æ€»è¿›åº¦" aria-valuemin="0" aria-valuemax="183" aria-valuenow="0" id="progressTrack">
+        <div class="flag-rail" id="flagRail" aria-label="每完成 5 次打卡点亮一面小旗"></div>
+        <div class="progress-track" role="progressbar" aria-label="暑假任务总进度" aria-valuemin="0" aria-valuemax="183" aria-valuenow="0" id="progressTrack">
           <div class="progress-fill" id="progressFill"></div>
           <div class="progress-label" id="progressLabel">0%</div>
         </div>
@@ -758,21 +758,21 @@
 
     <div>
       <div class="badge-head">
-        <strong>æˆå°±å‹‹ç« </strong>
-        <span class="text-muted" id="badgeSummary">0 / 10 å·²ç‚¹äº®</span>
+        <strong>成就勋章</strong>
+        <span class="text-muted" id="badgeSummary">0 / 10 已点亮</span>
       </div>
       <div class="badge-grid" id="badgeGrid"></div>
     </div>
   </section>
 
-  <section aria-label="å¿«é€Ÿæ‰“å¡">
+  <section aria-label="快速打卡">
     <div class="quick-checkins" id="taskButtons"></div>
   </section>
 
-  <section aria-label="æ‰“å¡è®°å½•">
+  <section aria-label="打卡记录">
     <div class="activity-head">
-      <strong>æœ€è¿‘æ‰“å¡</strong>
-      <button class="undo-btn" id="undoBtn" type="button">æ’¤é”€ä¸Šä¸€æ­¥</button>
+      <strong>最近打卡</strong>
+      <button class="undo-btn" id="undoBtn" type="button">撤销上一步</button>
     </div>
     <div class="activity-list" id="activityList"></div>
   </section>
@@ -783,15 +783,15 @@
       if (!root) return;
 
       const tasks = {
-        sport:       { short: 'ä½“è‚²', station: 'è¿åŠ¨å²›', goal: 46, badgeAt: 7 },
-        english:     { short: 'è‹±è¯­', station: 'è‹±è¯­æ¹¾', goal: 15, badgeAt: 15 },
-        calculation: { short: 'æ•°å­¦è®¡ç®—', station: 'è®¡ç®—å±±', goal: 27, badgeAt: 27 },
-        writing:     { short: 'è¯­æ–‡ç»ƒå­—', station: 'ç»ƒå­—æ¡¥', goal: 33, badgeAt: 33 },
-        thinking:    { short: 'æ•°å­¦ç»ƒä¹ ', station: 'æ€ç»´æ£®æž—', goal: 23, badgeAt: 23 },
-        go:          { short: 'å›´æ£‹æ­»æ´»', station: 'å›´æ£‹æ´ž', goal: 10, badgeAt: 10 },
-        picture:     { short: 'çœ‹å›¾å†™è¯', station: 'å†™è¯ç€‘å¸ƒ', goal: 15, badgeAt: 10 },
-        fun:         { short: 'è¶£å‘³ä»»åŠ¡', station: 'ä»»åŠ¡å±‹', goal: 10, badgeAt: 10 },
-        outdoor:     { short: 'å‘¨å…­æˆ·å¤–', station: 'æˆ·å¤–ç å¤´', goal: 4, badgeAt: 4 }
+        sport:       { short: '体育', station: '运动岛', goal: 46, badgeAt: 7 },
+        english:     { short: '英语', station: '英语湾', goal: 15, badgeAt: 15 },
+        calculation: { short: '数学计算', station: '计算山', goal: 27, badgeAt: 27 },
+        writing:     { short: '语文练字', station: '练字桥', goal: 33, badgeAt: 33 },
+        thinking:    { short: '数学练习', station: '思维森林', goal: 23, badgeAt: 23 },
+        go:          { short: '围棋死活', station: '围棋洞', goal: 10, badgeAt: 10 },
+        picture:     { short: '看图写话', station: '写话瀑布', goal: 15, badgeAt: 10 },
+        fun:         { short: '趣味任务', station: '任务屋', goal: 10, badgeAt: 10 },
+        outdoor:     { short: '周六户外', station: '户外码头', goal: 4, badgeAt: 4 }
       };
 
       const taskOrder = ['sport', 'english', 'calculation', 'writing', 'thinking', 'go', 'picture', 'fun', 'outdoor'];
@@ -800,16 +800,16 @@
       try { localStorage.removeItem('summer-adventure-checkin-v1'); } catch (_) {}
 
       const badges = [
-        { id: 'sport', mark: 'åŠ¨', name: 'è¿åŠ¨å²›å‹‡å£«', desc: 'è¿žç»­ä½“è‚² 7 å¤©', unlocked: s => longestSportStreak(s.logs) >= 7 },
-        { id: 'english', mark: 'è‹±', name: 'è‹±è¯­æ¹¾èˆ¹é•¿', desc: 'ä»Ž 7 æœˆ 17 æ—¥åšæŒåˆ° 8 æœˆ 3 æ—¥', unlocked: s => s.counts.english >= 15 },
-        { id: 'calculation', mark: 'ç®—', name: 'è®¡ç®—å±±é«˜æ‰‹', desc: 'å®Œæˆ 27 æ¬¡æ•°å­¦è®¡ç®—', unlocked: s => s.counts.calculation >= 27 },
-        { id: 'writing', mark: 'å­—', name: 'ç»ƒå­—æ¡¥å°ä¹¦æ³•å®¶', desc: 'å®Œæˆ 33 æ¬¡ç»ƒå­—', unlocked: s => s.counts.writing >= 33 },
-        { id: 'thinking', mark: 'æ€', name: 'æ€ç»´æ£®æž—æŽ¢é™©å®¶', desc: 'å®Œæˆ 23 é¡µæ•°å­¦ç»ƒä¹ ', unlocked: s => s.counts.thinking >= 23 },
-        { id: 'go', mark: 'æ£‹', name: 'å›´æ£‹æ´žå°æ£‹å£«', desc: 'å›´æ£‹æ­»æ´»ç´¯è®¡ 10 æ¬¡', unlocked: s => s.counts.go >= 10 },
-        { id: 'picture', mark: 'ç”»', name: 'çœ‹å›¾å†™è¯å°ä½œå®¶', desc: 'ç´¯è®¡ 10 æ¬¡ï¼Œ15 æ¬¡æ»¡çº§', unlocked: s => s.counts.picture >= 10 },
-        { id: 'fun', mark: 'è¶£', name: 'ä»»åŠ¡å±‹ç®¡ç†å‘˜', desc: 'å®Œæˆ 10 æ¬¡è¶£å‘³ä»»åŠ¡', unlocked: s => s.counts.fun >= 10 },
-        { id: 'outdoor', mark: 'æˆ·', name: 'å‘¨å…­æˆ·å¤–æ——æ‰‹', desc: 'å‚åŠ  4 æ¬¡å‘¨å…­æˆ·å¤–', unlocked: s => s.counts.outdoor >= 4 },
-        { id: 'finish', mark: 'å®', name: 'ç»ˆç‚¹å®è—çŽ‹', desc: 'èµ°å®Œæ•´å¼ å†’é™©åœ°å›¾', unlocked: s => totalSteps(s) >= totalGoal }
+        { id: 'sport', mark: '动', name: '运动岛勇士', desc: '连续体育 7 天', unlocked: s => longestSportStreak(s.logs) >= 7 },
+        { id: 'english', mark: '英', name: '英语湾船长', desc: '从 7 月 17 日坚持到 8 月 3 日', unlocked: s => s.counts.english >= 15 },
+        { id: 'calculation', mark: '算', name: '计算山高手', desc: '完成 27 次数学计算', unlocked: s => s.counts.calculation >= 27 },
+        { id: 'writing', mark: '字', name: '练字桥小书法家', desc: '完成 33 次练字', unlocked: s => s.counts.writing >= 33 },
+        { id: 'thinking', mark: '思', name: '思维森林探险家', desc: '完成 23 页数学练习', unlocked: s => s.counts.thinking >= 23 },
+        { id: 'go', mark: '棋', name: '围棋洞小棋士', desc: '围棋死活累计 10 次', unlocked: s => s.counts.go >= 10 },
+        { id: 'picture', mark: '画', name: '看图写话小作家', desc: '累计 10 次，15 次满级', unlocked: s => s.counts.picture >= 10 },
+        { id: 'fun', mark: '趣', name: '任务屋管理员', desc: '完成 10 次趣味任务', unlocked: s => s.counts.fun >= 10 },
+        { id: 'outdoor', mark: '户', name: '周六户外旗手', desc: '参加 4 次周六户外', unlocked: s => s.counts.outdoor >= 4 },
+        { id: 'finish', mark: '宝', name: '终点宝藏王', desc: '走完整张冒险地图', unlocked: s => totalSteps(s) >= totalGoal }
       ];
 
       const route = [
@@ -910,7 +910,9 @@
       const voiceBags = { island: [], sun: [], firework: [] };
       const lastVoiceIndex = { island: -1, sun: -1, firework: -1 };
       const backgroundAudio = root.querySelector('#backgroundAudio');
-      const backgroundTracks = JSON.parse(root.querySelector('#backgroundAudioList')?.textContent || '[]');
+      const backgroundTracks = JSON.parse(root.querySelector('#backgroundAudioList')?.textContent || '[]')
+        .map(track => typeof track === 'string' ? { src: track, bytes: 0 } : track)
+        .filter(track => track && track.src);
 
       function syncUnlocks() {
         const unlocked = new Set(state.unlocked);
@@ -937,7 +939,7 @@
         const star = document.createElement('span');
         star.className = 'star-pop';
         star.setAttribute('aria-hidden', 'true');
-        star.textContent = 'â­';
+        star.textContent = '⭐';
         star.style.left = `${sourceX}px`;
         star.style.top = `${sourceY}px`;
         root.appendChild(star);
@@ -1014,7 +1016,7 @@
         if (!backgroundBag.length) refillBackgroundBag();
         const nextIndex = backgroundBag.pop();
         lastBackgroundIndex = nextIndex;
-        backgroundAudio.src = backgroundTracks[nextIndex];
+        backgroundAudio.src = backgroundTracks[nextIndex].src;
         backgroundAudio.volume = activeVoice ? 0.045 : 0.18;
         backgroundAudio.play().catch(() => {
           backgroundStarted = false;
@@ -1116,12 +1118,12 @@
 
       function soundDolphin() {
         playRecording('dolphinAudio', 3600, .82);
-        showToast('æµ·è±šåœ¨ä¸ºä½ æ¬¢å‘¼ï¼');
+        showToast('海豚在为你欢呼！');
       }
 
       function soundShip() {
         playRecording('shipAudio', 2800, .55);
-        showToast('å˜Ÿâ€”â€”å†’é™©å·å¯èˆªï¼');
+        showToast('嘟——冒险号启航！');
       }
 
       function synthFireworks() {
@@ -1165,12 +1167,12 @@
 
       function soundSeagull() {
         playRecording('seagullAudio', 1900, .72);
-        showToast('æµ·é¸¥æ¥æ‰“æ‹›å‘¼å•¦ï¼');
+        showToast('海鸥来打招呼啦！');
       }
 
       function speakPraise() {
         playRandomVoice('sun', playCheckinSound);
-        showToast('â˜€ çƒ­æƒ…å¤ªé˜³æ¥å¤¸å¥–ä½ å•¦ï¼');
+        showToast('☀ 热情太阳来夸奖你啦！');
       }
 
       function playScene(scene) {
@@ -1184,7 +1186,7 @@
       function checkIn(taskId, sourceButton, point) {
         const task = tasks[taskId];
         if (!task || state.counts[taskId] >= task.goal) {
-          if (task) showToast(`${task.station}å·²ç»å®Œæˆå…¨éƒ¨ç›®æ ‡`);
+          if (task) showToast(`${task.station}已经完成全部目标`);
           return;
         }
 
@@ -1195,7 +1197,7 @@
         syncUnlocks();
         saveState();
         render();
-        showToast(`${task.short} +1ï¼Œå°çŒªå‰è¿›ä¸€æ­¥ï¼`);
+        showToast(`${task.short} +1，小猪前进一步！`);
 
         if (sourceButton) {
           sourceButton.classList.remove('is-bump');
@@ -1211,7 +1213,7 @@
         state.counts[last.taskId] = Math.max(0, state.counts[last.taskId] - 1);
         saveState();
         render();
-        showToast(`å·²æ’¤é”€ï¼š${tasks[last.taskId].short}`);
+        showToast(`已撤销：${tasks[last.taskId].short}`);
       }
 
       function renderTaskButtons() {
@@ -1220,7 +1222,7 @@
           const task = tasks[id];
           const count = state.counts[id];
           const done = count >= task.goal;
-          return `<button class="task-btn" type="button" data-quick-task="${id}" ${done ? 'disabled' : ''} aria-label="${task.short}æ‰“å¡ï¼Œå½“å‰ ${count}ï¼Œç›®æ ‡ ${task.goal}"><strong>${task.short}</strong><span>${count} / ${task.goal}${done ? ' Â· å·²å®Œæˆ' : ''}</span></button>`;
+          return `<button class="task-btn" type="button" data-quick-task="${id}" ${done ? 'disabled' : ''} aria-label="${task.short}打卡，当前 ${count}，目标 ${task.goal}"><strong>${task.short}</strong><span>${count} / ${task.goal}${done ? ' · 已完成' : ''}</span></button>`;
         }).join('');
       }
 
@@ -1241,9 +1243,9 @@
         const grid = root.querySelector('#badgeGrid');
         grid.innerHTML = badges.map(badge => {
           const isUnlocked = unlocked.has(badge.id);
-          return `<article class="medal ${isUnlocked ? 'unlocked' : ''}" aria-label="${badge.name}ï¼Œ${isUnlocked ? 'å·²ç‚¹äº®' : 'æœªç‚¹äº®'}"><span class="medal-mark">${badge.mark}</span><span class="medal-copy"><strong>${badge.name}</strong><span>${badge.desc}</span></span></article>`;
+          return `<article class="medal ${isUnlocked ? 'unlocked' : ''}" aria-label="${badge.name}，${isUnlocked ? '已点亮' : '未点亮'}"><span class="medal-mark">${badge.mark}</span><span class="medal-copy"><strong>${badge.name}</strong><span>${badge.desc}</span></span></article>`;
         }).join('');
-        root.querySelector('#badgeSummary').textContent = `${badges.filter(badge => unlocked.has(badge.id)).length} / ${badges.length} å·²ç‚¹äº®`;
+        root.querySelector('#badgeSummary').textContent = `${badges.filter(badge => unlocked.has(badge.id)).length} / ${badges.length} 已点亮`;
       }
 
       function renderFlags(steps) {
@@ -1253,7 +1255,7 @@
           const target = (index + 1) * 5;
           const reached = steps >= target;
           const left = target / totalGoal * 100;
-          return `<span class="flag-marker ${reached ? 'reached' : ''}" style="left:${left}%" aria-label="ç¬¬ ${index + 1} é¢å°æ——ï¼Œ${reached ? 'å·²ç‚¹äº®' : `è¿˜å·® ${target - steps} æ¬¡æ‰“å¡`}"></span>`;
+          return `<span class="flag-marker ${reached ? 'reached' : ''}" style="left:${left}%" aria-label="第 ${index + 1} 面小旗，${reached ? '已点亮' : `还差 ${target - steps} 次打卡`}"></span>`;
         }).join('');
       }
 
@@ -1270,11 +1272,11 @@
         root.querySelector('#starCount').textContent = steps;
         root.querySelector('#flagCount').textContent = flags;
         root.querySelector('#statusText').textContent = steps >= totalGoal
-          ? 'å·²ç»æŠµè¾¾ç»ˆç‚¹ï¼Œå®è—çŽ‹è¯žç”Ÿï¼'
+          ? '已经抵达终点，宝藏王诞生！'
           : steps
-            ? `å·²èµ° ${steps} æ­¥ï¼Œè¿˜æœ‰ ${totalGoal - steps} æ­¥åˆ°ç»ˆç‚¹ï¼›ä¸‹ä¸€é¢å°æ——è¿˜å·® ${starsToNextFlag} é¢—æ˜Ÿæ˜Ÿ`
-            : `ä»Žèµ·ç‚¹å‡ºå‘ï¼Œå…± ${totalGoal} æ­¥åˆ°è¾¾å®è—`;
-        root.querySelector('#progressDetail').textContent = `${steps} / ${totalGoal} æ­¥`;
+            ? `已走 ${steps} 步，还有 ${totalGoal - steps} 步到终点；下一面小旗还差 ${starsToNextFlag} 颗星星`
+            : `从起点出发，共 ${totalGoal} 步到达宝藏`;
+        root.querySelector('#progressDetail').textContent = `${steps} / ${totalGoal} 步`;
         root.querySelector('#progressLabel').textContent = `${percent}%`;
         root.querySelector('#progressFill').style.width = `${percent}%`;
         const track = root.querySelector('#progressTrack');
@@ -1331,7 +1333,6 @@
     })();
   </script>
 </div>
-
 </main>
   <script>
     if ('serviceWorker' in navigator) {
