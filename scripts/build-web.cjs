@@ -21,8 +21,7 @@ const assetNames = [
   'wobble-finish.webp',
   'wobble-music.webp',
   'wobble-mystery.webp',
-  'music-speaker-left.webp',
-  'music-speaker-right.webp',
+  'music-foreground.webp',
   'real-dolphin.wav',
   'real-seagull.mp3',
   'real-ship-horn.mp3'

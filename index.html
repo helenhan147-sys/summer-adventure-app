@@ -203,51 +203,21 @@
       animation-duration: 3.2s;
     }
 
-    #summer-checkin-app .music-note-dancer,
-    #summer-checkin-app .music-speaker {
+    #summer-checkin-app .music-foreground {
       position: absolute;
       z-index: 4;
+      left: 53.8%;
+      top: 33.8%;
+      width: 13.6%;
+      aspect-ratio: 420 / 285;
       pointer-events: none;
       transform-origin: 50% 70%;
+      animation: music-foreground-dance 1.05s ease-in-out infinite;
+      filter: drop-shadow(0 4px 4px color-mix(in srgb, var(--foreground) 22%, transparent));
       will-change: transform, filter;
     }
 
-    #summer-checkin-app .music-note-dancer {
-      left: 53.8%;
-      top: 36.2%;
-      width: 8.8%;
-      aspect-ratio: 1;
-      display: grid;
-      place-items: center;
-      color: #7a3ff2;
-      font-size: clamp(34px, 5vw, 78px);
-      font-weight: 800;
-      text-shadow:
-        0 2px 0 #f6d8ff,
-        0 5px 8px color-mix(in srgb, var(--foreground) 22%, transparent);
-      animation: music-note-dance 1.05s ease-in-out infinite;
-    }
-
-    #summer-checkin-app .music-speaker {
-      width: 4.1%;
-      aspect-ratio: 109 / 145;
-      filter: drop-shadow(0 3px 3px color-mix(in srgb, var(--foreground) 18%, transparent));
-      animation: speaker-bounce .56s ease-in-out infinite alternate;
-    }
-
-    #summer-checkin-app .music-speaker.left {
-      left: 48.3%;
-      top: 41.8%;
-      animation-name: speaker-pulse-left;
-    }
-
-    #summer-checkin-app .music-speaker.right {
-      left: 58.8%;
-      top: 42%;
-      animation-name: speaker-pulse-right;
-    }
-
-    #summer-checkin-app .music-speaker img {
+    #summer-checkin-app .music-foreground img {
       display: block;
       width: 100%;
       height: 100%;
@@ -649,20 +619,10 @@
       100% { transform: rotate(2.7deg) translate(2px, 1px); }
     }
 
-    @keyframes music-note-dance {
-      0%, 100% { transform: translate(-50%, -50%) rotate(-5deg) scale(1); }
-      35% { transform: translate(-50%, -63%) rotate(7deg) scale(1.12); }
-      62% { transform: translate(-50%, -48%) rotate(-2deg) scale(.96); }
-    }
-
-    @keyframes speaker-pulse-left {
-      0% { transform: translate(-50%, -50%) rotate(-3deg) scale(1); }
-      100% { transform: translate(-58%, -53%) rotate(-7deg) scale(1.14, 1.08); }
-    }
-
-    @keyframes speaker-pulse-right {
-      0% { transform: translate(-50%, -50%) rotate(3deg) scale(1); }
-      100% { transform: translate(-42%, -53%) rotate(7deg) scale(1.14, 1.08); }
+    @keyframes music-foreground-dance {
+      0%, 100% { transform: translate(-50%, -50%) rotate(-2deg) scale(1); }
+      34% { transform: translate(-50%, -58%) rotate(4deg) scale(1.07); }
+      62% { transform: translate(-50%, -48%) rotate(-1deg) scale(.98); }
     }
 
     @media (max-width: 1050px) {
@@ -731,8 +691,7 @@
       #summer-checkin-app .star-pop::before,
       #summer-checkin-app .star-pop::after { animation-duration: .01ms; }
       #summer-checkin-app .wobble-piece,
-      #summer-checkin-app .music-note-dancer,
-      #summer-checkin-app .music-speaker { animation: none; }
+      #summer-checkin-app .music-foreground { animation: none; }
     }
   </style>
 
@@ -761,11 +720,9 @@
       <span class="wobble-piece" style="--left:68%;--top:34%;--width:32%;--height:42%;--duration:2.7s;--delay:-2.6s"><img src="assets/wobble-thinking.webp" alt="" aria-hidden="true"></span>
       <span class="wobble-piece" style="--left:28%;--top:62%;--width:34%;--height:38%;--duration:2.95s;--delay:-1.9s"><img src="assets/wobble-fun.webp" alt="" aria-hidden="true"></span>
       <span class="wobble-piece" style="--left:67%;--top:64%;--width:33%;--height:36%;--duration:2.68s;--delay:-.7s"><img src="assets/wobble-finish.webp" alt="" aria-hidden="true"></span>
-      <span class="wobble-piece music" style="--left:43%;--top:25%;--width:21%;--height:27%;--duration:2.4s;--delay:-1.1s"><img src="assets/wobble-music.webp" alt="" aria-hidden="true"></span>
-      <span class="wobble-piece mystery" style="--left:5%;--top:31%;--width:15%;--height:16%;--duration:3.2s;--delay:-.8s"><img src="assets/wobble-mystery.webp" alt="" aria-hidden="true"></span>
-      <span class="music-note-dancer" aria-hidden="true">♪</span>
-      <span class="music-speaker left" aria-hidden="true"><img src="assets/music-speaker-left.webp" alt=""></span>
-      <span class="music-speaker right" aria-hidden="true"><img src="assets/music-speaker-right.webp" alt=""></span>
+      <span class="wobble-piece music" style="--left:44.9%;--top:27.7%;--width:17.2%;--height:21.6%;--duration:2.4s;--delay:-1.1s"><img src="assets/wobble-music.webp" alt="" aria-hidden="true"></span>
+      <span class="wobble-piece mystery" style="--left:2%;--top:38%;--width:15%;--height:16%;--duration:3.2s;--delay:-.8s"><img src="assets/wobble-mystery.webp" alt="" aria-hidden="true"></span>
+      <span class="music-foreground" aria-hidden="true"><img src="assets/music-foreground.webp" alt=""></span>
 
       <button class="scenery-hotspot" style="--x:6%;--y:10%;--w:10%;--h:15%" data-scene="sun" aria-label="点击太阳，听一句英文夸奖"></button>
       <button class="scenery-hotspot" style="--x:18%;--y:12%;--w:9%;--h:9%" data-scene="seagull" aria-label="点击海鸥，播放海鸥叫声"></button>
@@ -774,8 +731,8 @@
       <button class="scenery-hotspot" style="--x:94%;--y:40%;--w:9%;--h:13%" data-scene="dolphin" aria-label="点击海豚，播放海豚叫声"></button>
       <button class="scenery-hotspot" style="--x:23%;--y:87%;--w:10%;--h:12%" data-scene="dolphin" aria-label="点击海豚，播放海豚叫声"></button>
       <button class="scenery-hotspot" style="--x:94%;--y:70%;--w:11%;--h:17%" data-scene="fireworks" aria-label="点击烟花，播放烟花爆炸声"></button>
-      <button class="scenery-hotspot music-hotspot" style="--x:53.5%;--y:38%;--w:17%;--h:20%" data-music-control aria-label="点击音乐岛，播放或切换背景音乐"></button>
-      <button class="scenery-hotspot" style="--x:12.5%;--y:39%;--w:12%;--h:12%" data-mystery-bonus aria-label="点击神秘岛，获得一次彩蛋打卡"></button>
+      <button class="scenery-hotspot music-hotspot" style="--x:53.5%;--y:38%;--w:14%;--h:17%" data-music-control aria-label="点击音乐岛，播放或切换背景音乐"></button>
+      <button class="scenery-hotspot" style="--x:9.5%;--y:46%;--w:12%;--h:12%" data-mystery-bonus aria-label="点击神秘岛，获得一次彩蛋打卡"></button>
 
       <button class="hotspot" style="--x:34%;--y:18%" data-task="sport" aria-label="体育打卡，运动岛前进一步"></button>
       <button class="hotspot" style="--x:59%;--y:18%" data-task="english" aria-label="英语打卡，英语湾前进一步"></button>
