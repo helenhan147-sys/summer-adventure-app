@@ -19,7 +19,7 @@ const assetNames = [
   'wobble-thinking.webp',
   'wobble-fun.webp',
   'wobble-finish.webp',
-  'wobble-music.webp',
+  'music-island-base.webp',
   'wobble-mystery.webp',
   'music-foreground.webp',
   'real-dolphin.wav',

@@ -20,7 +20,7 @@ const required = [
   'data-task="picture"',
   'data-task="fun"',
   'data-task="outdoor"',
-  'assets/wobble-music.webp',
+  'assets/music-island-base.webp',
   'assets/wobble-mystery.webp',
   'assets/music-foreground.webp',
   'data-music-control',
