@@ -19,6 +19,9 @@ const assetNames = [
   'wobble-thinking.webp',
   'wobble-fun.webp',
   'wobble-finish.webp',
+  'wobble-music.webp',
+  'music-speaker-left.webp',
+  'music-speaker-right.webp',
   'real-dolphin.wav',
   'real-seagull.mp3',
   'real-ship-horn.mp3'
@@ -33,6 +36,7 @@ const heavyClickVoices = new Set([
 ]);
 
 const doubleClickVoices = new Set([
+  '1-23. Solution Fanfare',
   '1-25 Launch from the Skyview Tower!',
   '1-29 Descend to the Depths',
   "7-31 Hestu's Dance! -Upgrade-",
@@ -208,7 +212,8 @@ const manifest = {
   ]
 };
 
-const serviceWorker = `const CACHE_NAME = 'summer-adventure-pwa-v${Date.now()}';
+const serviceWorker = `const APP_CACHE = 'summer-adventure-pwa-v${Date.now()}';
+const MEDIA_CACHE = 'summer-adventure-media-v1';
 const SHELL_ASSETS = ${JSON.stringify(shellAssets, null, 2)};
 const RUNTIME_ASSETS = ${JSON.stringify(runtimeAssets, null, 2)};
 let backgroundCachePromise = null;
@@ -222,10 +227,14 @@ function normalizeAsset(asset) {
   return new URL(asset, self.location.href).href;
 }
 
+async function matchCached(request) {
+  return caches.match(request);
+}
+
 async function cacheBackgroundTracks(assets) {
   const urls = [...new Set((assets || []).map(normalizeAsset).filter(Boolean))];
   if (!urls.length) return;
-  const cache = await caches.open(CACHE_NAME);
+  const cache = await caches.open(MEDIA_CACHE);
   for (const url of urls) {
     const cached = await cache.match(url);
     if (!cached) {
@@ -239,13 +248,15 @@ async function cacheBackgroundTracks(assets) {
 }
 
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(SHELL_ASSETS)));
+  event.waitUntil(caches.open(APP_CACHE).then(cache => cache.addAll(SHELL_ASSETS)));
   self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))))
+    caches.keys().then(keys => Promise.all(keys
+      .filter(key => key !== APP_CACHE && key !== MEDIA_CACHE && !key.startsWith('summer-adventure-pwa-v'))
+      .map(key => caches.delete(key))))
   );
   self.clients.claim();
 });
@@ -257,16 +268,16 @@ self.addEventListener('fetch', event => {
   if (request.mode === 'navigate') {
     event.respondWith(fetch(request).then(response => {
       const copy = response.clone();
-      caches.open(CACHE_NAME).then(cache => cache.put('./index.html', copy));
+      caches.open(APP_CACHE).then(cache => cache.put('./index.html', copy));
       return response;
     }).catch(() => caches.match('./index.html')));
     return;
   }
   if (url.origin !== location.origin) return;
-  event.respondWith(caches.match(request).then(cached => cached || fetch(request).then(response => {
+  event.respondWith(matchCached(request).then(cached => cached || fetch(request).then(response => {
     if (response.ok && (SHELL_ASSETS.includes(url.pathname.split('/').pop()) || RUNTIME_ASSETS.some(asset => url.pathname.endsWith(asset.slice(1))))) {
       const copy = response.clone();
-      caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+      caches.open(APP_CACHE).then(cache => cache.put(request, copy));
     }
     return response;
   })));

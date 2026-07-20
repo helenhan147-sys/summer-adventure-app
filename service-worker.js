@@ -1,4 +1,5 @@
-const CACHE_NAME = 'summer-adventure-pwa-v1784399804787';
+const APP_CACHE = 'summer-adventure-pwa-v1784530515096';
+const MEDIA_CACHE = 'summer-adventure-media-v1';
 const SHELL_ASSETS = [
   "./",
   "./index.html",
@@ -14,6 +15,9 @@ const SHELL_ASSETS = [
   "./assets/wobble-thinking.webp",
   "./assets/wobble-fun.webp",
   "./assets/wobble-finish.webp",
+  "./assets/wobble-music.webp",
+  "./assets/music-speaker-left.webp",
+  "./assets/music-speaker-right.webp",
   "./assets/real-dolphin.wav",
   "./assets/real-seagull.mp3",
   "./assets/real-ship-horn.mp3"
@@ -30,10 +34,14 @@ function normalizeAsset(asset) {
   return new URL(asset, self.location.href).href;
 }
 
+async function matchCached(request) {
+  return caches.match(request);
+}
+
 async function cacheBackgroundTracks(assets) {
   const urls = [...new Set((assets || []).map(normalizeAsset).filter(Boolean))];
   if (!urls.length) return;
-  const cache = await caches.open(CACHE_NAME);
+  const cache = await caches.open(MEDIA_CACHE);
   for (const url of urls) {
     const cached = await cache.match(url);
     if (!cached) {
@@ -47,13 +55,15 @@ async function cacheBackgroundTracks(assets) {
 }
 
 self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(SHELL_ASSETS)));
+  event.waitUntil(caches.open(APP_CACHE).then(cache => cache.addAll(SHELL_ASSETS)));
   self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys => Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))))
+    caches.keys().then(keys => Promise.all(keys
+      .filter(key => key !== APP_CACHE && key !== MEDIA_CACHE && !key.startsWith('summer-adventure-pwa-v'))
+      .map(key => caches.delete(key))))
   );
   self.clients.claim();
 });
@@ -65,16 +75,16 @@ self.addEventListener('fetch', event => {
   if (request.mode === 'navigate') {
     event.respondWith(fetch(request).then(response => {
       const copy = response.clone();
-      caches.open(CACHE_NAME).then(cache => cache.put('./index.html', copy));
+      caches.open(APP_CACHE).then(cache => cache.put('./index.html', copy));
       return response;
     }).catch(() => caches.match('./index.html')));
     return;
   }
   if (url.origin !== location.origin) return;
-  event.respondWith(caches.match(request).then(cached => cached || fetch(request).then(response => {
+  event.respondWith(matchCached(request).then(cached => cached || fetch(request).then(response => {
     if (response.ok && (SHELL_ASSETS.includes(url.pathname.split('/').pop()) || RUNTIME_ASSETS.some(asset => url.pathname.endsWith(asset.slice(1))))) {
       const copy = response.clone();
-      caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
+      caches.open(APP_CACHE).then(cache => cache.put(request, copy));
     }
     return response;
   })));

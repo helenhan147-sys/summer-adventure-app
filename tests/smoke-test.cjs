@@ -20,6 +20,11 @@ const required = [
   'data-task="picture"',
   'data-task="fun"',
   'data-task="outdoor"',
+  'assets/wobble-music.webp',
+  'assets/music-speaker-left.webp',
+  'assets/music-speaker-right.webp',
+  'data-music-control',
+  'function playMusicControl()',
   'class="badge-grid"',
   'class="progress-track"',
   'id="flagRail"',
@@ -33,6 +38,8 @@ const required = [
   'function takeBackgroundIndex()',
   'function requestBackgroundCache()',
   "type: 'CACHE_BACKGROUND_TRACKS'",
+  'music-note-dancer',
+  'music-speaker left',
   'function synthFireworks()',
   "playRandomVoice('firework', synthFireworks)",
   "document.addEventListener('visibilitychange'",
@@ -51,6 +58,9 @@ if (missing.length) throw new Error(`Missing: ${missing.join(', ')}`);
 if (html.includes('\n      startBackgroundMusic();\n\n      root.querySelector')) {
   throw new Error('Background music should wait for a user gesture before drawing from the persisted queue');
 }
+if (html.includes("window.addEventListener(type, startBackgroundMusic")) {
+  throw new Error('Background music should be controlled by the music island, not any screen tap');
+}
 
 const imageMatch = html.match(/<img\s+src="([^"]+)"/);
 if (!imageMatch) throw new Error('Map reference missing');
@@ -59,26 +69,28 @@ if (html.includes('data:image/') || html.includes('data:audio/')) throw new Erro
 if (!html.includes('rel="manifest" href="manifest.webmanifest"')) throw new Error('Manifest link missing');
 if (!html.includes("navigator.serviceWorker.register('service-worker.js')")) throw new Error('Service worker registration missing');
 if (!manifest.includes('"display": "standalone"')) throw new Error('Standalone display missing from manifest');
-if (!serviceWorker.includes('CACHE_NAME')) throw new Error('Service worker cache missing');
+if (!serviceWorker.includes('APP_CACHE')) throw new Error('Service worker app cache missing');
+if (!serviceWorker.includes('MEDIA_CACHE')) throw new Error('Service worker media cache missing');
+if (!serviceWorker.includes("key.startsWith('summer-adventure-pwa-v')")) throw new Error('Old PWA caches should be preserved for already-cached music');
 if (!serviceWorker.includes("event.data?.type !== 'CACHE_BACKGROUND_TRACKS'")) throw new Error('Background cache message handler missing');
 if (!serviceWorker.includes('await wait(850)')) throw new Error('Background precache should be throttled');
 
 const taskHotspots = (html.match(/data-task="[^"]+"[^>]*><\/button>/g) || []).length;
 if (taskHotspots !== 9) throw new Error(`Expected 9 invisible task hotspots, found ${taskHotspots}`);
-const wobblePieces = (html.match(/class="wobble-piece"/g) || []).length;
-if (wobblePieces !== 9) throw new Error(`Expected 9 wobble pieces, found ${wobblePieces}`);
+const wobblePieces = (html.match(/class="wobble-piece(?:\s[^"]*)?"/g) || []).length;
+if (wobblePieces !== 10) throw new Error(`Expected 10 wobble pieces, found ${wobblePieces}`);
 const islandVoices = (html.match(/data-voice-kind="island"/g) || []).length;
 const sunVoices = (html.match(/data-voice-kind="sun"/g) || []).length;
 const heavyIslandVoices = (html.match(/data-voice-kind="island"[^>]+data-voice-weight="3"/g) || []).length;
 const doubleIslandVoices = (html.match(/data-voice-kind="island"[^>]+data-voice-weight="2"/g) || []).length;
 const fireworkVoices = (html.match(/data-voice-kind="firework"/g) || []).length;
 const backgroundTracks = (html.match(/assets\/Voices\/Background/g) || []).length;
-if (islandVoices !== 33) throw new Error(`Expected 33 island voices, found ${islandVoices}`);
+if (islandVoices !== 34) throw new Error(`Expected 34 island voices, found ${islandVoices}`);
 if (sunVoices !== 1) throw new Error(`Expected 1 sun voice, found ${sunVoices}`);
 if (heavyIslandVoices !== 5) throw new Error(`Expected 5 weighted island voices, found ${heavyIslandVoices}`);
-if (doubleIslandVoices !== 6) throw new Error(`Expected 6 double-weight island voices, found ${doubleIslandVoices}`);
+if (doubleIslandVoices !== 7) throw new Error(`Expected 7 double-weight island voices, found ${doubleIslandVoices}`);
 if (fireworkVoices !== 1) throw new Error(`Expected 1 firework voice, found ${fireworkVoices}`);
-if (backgroundTracks !== 26) throw new Error(`Expected 26 background tracks, found ${backgroundTracks}`);
+if (backgroundTracks !== 32) throw new Error(`Expected 32 background tracks, found ${backgroundTracks}`);
 
 console.log(JSON.stringify({
   syntax: 'ok',
