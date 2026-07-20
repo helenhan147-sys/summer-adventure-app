@@ -1,4 +1,4 @@
-const APP_CACHE = 'summer-adventure-pwa-v1784530515096';
+const APP_CACHE = 'summer-adventure-pwa-v1784532158743';
 const MEDIA_CACHE = 'summer-adventure-media-v1';
 const SHELL_ASSETS = [
   "./",
@@ -16,6 +16,7 @@ const SHELL_ASSETS = [
   "./assets/wobble-fun.webp",
   "./assets/wobble-finish.webp",
   "./assets/wobble-music.webp",
+  "./assets/wobble-mystery.webp",
   "./assets/music-speaker-left.webp",
   "./assets/music-speaker-right.webp",
   "./assets/real-dolphin.wav",

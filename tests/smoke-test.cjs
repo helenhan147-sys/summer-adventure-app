@@ -21,10 +21,13 @@ const required = [
   'data-task="fun"',
   'data-task="outdoor"',
   'assets/wobble-music.webp',
+  'assets/wobble-mystery.webp',
   'assets/music-speaker-left.webp',
   'assets/music-speaker-right.webp',
   'data-music-control',
+  'data-mystery-bonus',
   'function playMusicControl()',
+  'function checkMysteryBonus(',
   'class="badge-grid"',
   'class="progress-track"',
   'id="flagRail"',
@@ -40,6 +43,7 @@ const required = [
   "type: 'CACHE_BACKGROUND_TRACKS'",
   'music-note-dancer',
   'music-speaker left',
+  "playRandomVoice('mystery', playCheckinSound)",
   'function synthFireworks()',
   "playRandomVoice('firework', synthFireworks)",
   "document.addEventListener('visibilitychange'",
@@ -78,18 +82,20 @@ if (!serviceWorker.includes('await wait(850)')) throw new Error('Background prec
 const taskHotspots = (html.match(/data-task="[^"]+"[^>]*><\/button>/g) || []).length;
 if (taskHotspots !== 9) throw new Error(`Expected 9 invisible task hotspots, found ${taskHotspots}`);
 const wobblePieces = (html.match(/class="wobble-piece(?:\s[^"]*)?"/g) || []).length;
-if (wobblePieces !== 10) throw new Error(`Expected 10 wobble pieces, found ${wobblePieces}`);
+if (wobblePieces !== 11) throw new Error(`Expected 11 wobble pieces, found ${wobblePieces}`);
 const islandVoices = (html.match(/data-voice-kind="island"/g) || []).length;
 const sunVoices = (html.match(/data-voice-kind="sun"/g) || []).length;
 const heavyIslandVoices = (html.match(/data-voice-kind="island"[^>]+data-voice-weight="3"/g) || []).length;
 const doubleIslandVoices = (html.match(/data-voice-kind="island"[^>]+data-voice-weight="2"/g) || []).length;
 const fireworkVoices = (html.match(/data-voice-kind="firework"/g) || []).length;
+const mysteryVoices = (html.match(/data-voice-kind="mystery"/g) || []).length;
 const backgroundTracks = (html.match(/assets\/Voices\/Background/g) || []).length;
 if (islandVoices !== 34) throw new Error(`Expected 34 island voices, found ${islandVoices}`);
 if (sunVoices !== 1) throw new Error(`Expected 1 sun voice, found ${sunVoices}`);
 if (heavyIslandVoices !== 5) throw new Error(`Expected 5 weighted island voices, found ${heavyIslandVoices}`);
 if (doubleIslandVoices !== 7) throw new Error(`Expected 7 double-weight island voices, found ${doubleIslandVoices}`);
 if (fireworkVoices !== 1) throw new Error(`Expected 1 firework voice, found ${fireworkVoices}`);
+if (mysteryVoices !== 12) throw new Error(`Expected 12 mystery voices, found ${mysteryVoices}`);
 if (backgroundTracks !== 32) throw new Error(`Expected 32 background tracks, found ${backgroundTracks}`);
 
 console.log(JSON.stringify({
@@ -103,6 +109,7 @@ console.log(JSON.stringify({
   heavyIslandVoices,
   doubleIslandVoices,
   fireworkVoices,
+  mysteryVoices,
   backgroundTracks,
   totalGoal: 183,
   pwa: true,

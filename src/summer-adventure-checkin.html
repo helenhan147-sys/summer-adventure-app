@@ -105,6 +105,15 @@
       filter: drop-shadow(0 5px 5px color-mix(in srgb, var(--foreground) 20%, transparent));
     }
 
+    #summer-checkin-app .wobble-piece.mystery {
+      z-index: 3;
+      opacity: .58;
+      filter:
+        saturate(.92)
+        drop-shadow(0 4px 6px color-mix(in srgb, var(--primary) 28%, transparent));
+      animation-duration: 3.2s;
+    }
+
     #summer-checkin-app .music-note-dancer,
     #summer-checkin-app .music-speaker {
       position: absolute;
@@ -185,7 +194,8 @@
       cursor: default;
     }
 
-    #summer-checkin-app .hotspot.is-bump { animation: app-bump .28s ease-out; }
+    #summer-checkin-app .hotspot.is-bump,
+    #summer-checkin-app .scenery-hotspot.is-bump { animation: app-bump .28s ease-out; }
 
     #summer-checkin-app .scenery-hotspot {
       position: absolute;
@@ -663,6 +673,7 @@
       <span class="wobble-piece" style="--left:28%;--top:62%;--width:34%;--height:38%;--duration:2.95s;--delay:-1.9s"><img src="assets/wobble-fun.webp" alt="" aria-hidden="true"></span>
       <span class="wobble-piece" style="--left:67%;--top:64%;--width:33%;--height:36%;--duration:2.68s;--delay:-.7s"><img src="assets/wobble-finish.webp" alt="" aria-hidden="true"></span>
       <span class="wobble-piece music" style="--left:43%;--top:25%;--width:21%;--height:27%;--duration:2.4s;--delay:-1.1s"><img src="assets/wobble-music.webp" alt="" aria-hidden="true"></span>
+      <span class="wobble-piece mystery" style="--left:5%;--top:31%;--width:15%;--height:16%;--duration:3.2s;--delay:-.8s"><img src="assets/wobble-mystery.webp" alt="" aria-hidden="true"></span>
       <span class="music-note-dancer" aria-hidden="true">♪</span>
       <span class="music-speaker left" aria-hidden="true"><img src="assets/music-speaker-left.webp" alt=""></span>
       <span class="music-speaker right" aria-hidden="true"><img src="assets/music-speaker-right.webp" alt=""></span>
@@ -675,6 +686,7 @@
       <button class="scenery-hotspot" style="--x:23%;--y:87%;--w:10%;--h:12%" data-scene="dolphin" aria-label="点击海豚，播放海豚叫声"></button>
       <button class="scenery-hotspot" style="--x:94%;--y:70%;--w:11%;--h:17%" data-scene="fireworks" aria-label="点击烟花，播放烟花爆炸声"></button>
       <button class="scenery-hotspot music-hotspot" style="--x:53.5%;--y:38%;--w:17%;--h:20%" data-music-control aria-label="点击音乐岛，播放或切换背景音乐"></button>
+      <button class="scenery-hotspot" style="--x:12.5%;--y:39%;--w:12%;--h:12%" data-mystery-bonus aria-label="点击神秘岛，获得一次彩蛋打卡"></button>
 
       <button class="hotspot" style="--x:34%;--y:18%" data-task="sport" aria-label="体育打卡，运动岛前进一步"></button>
       <button class="hotspot" style="--x:59%;--y:18%" data-task="english" aria-label="英语打卡，英语湾前进一步"></button>
@@ -752,10 +764,12 @@
         go:          { short: '围棋死活', station: '围棋洞', goal: 10, badgeAt: 10 },
         picture:     { short: '看图写话', station: '写话瀑布', goal: 15, badgeAt: 10 },
         fun:         { short: '趣味任务', station: '任务屋', goal: 10, badgeAt: 10 },
-        outdoor:     { short: '周六户外', station: '户外码头', goal: 4, badgeAt: 4 }
+        outdoor:     { short: '周六户外', station: '户外码头', goal: 4, badgeAt: 4 },
+        mystery:     { short: '神秘彩蛋', station: '神秘岛', goal: 99, badgeAt: 1 }
       };
 
       const taskOrder = ['sport', 'english', 'calculation', 'writing', 'thinking', 'go', 'picture', 'fun', 'outdoor'];
+      const stateTaskOrder = [...taskOrder, 'mystery'];
       const totalGoal = taskOrder.reduce((sum, id) => sum + tasks[id].goal, 0);
       const storageKey = 'summer-adventure-checkin-v2';
       try { localStorage.removeItem('summer-adventure-checkin-v1'); } catch (_) {}
@@ -793,7 +807,7 @@
 
       function emptyState() {
         const counts = {};
-        taskOrder.forEach(id => { counts[id] = 0; });
+        stateTaskOrder.forEach(id => { counts[id] = 0; });
         return { counts, logs: [], unlocked: [] };
       }
 
@@ -802,8 +816,8 @@
           const parsed = JSON.parse(localStorage.getItem(storageKey));
           if (!parsed || !parsed.counts || !Array.isArray(parsed.logs)) return emptyState();
           const next = emptyState();
-          taskOrder.forEach(id => { next.counts[id] = Math.min(tasks[id].goal, Number(parsed.counts[id]) || 0); });
-          next.logs = parsed.logs.filter(log => tasks[log.taskId]).slice(0, totalGoal);
+          stateTaskOrder.forEach(id => { next.counts[id] = Math.min(tasks[id].goal, Number(parsed.counts[id]) || 0); });
+          next.logs = parsed.logs.filter(log => tasks[log.taskId]).slice(0, totalGoal + tasks.mystery.goal);
           next.unlocked = Array.isArray(parsed.unlocked) ? parsed.unlocked : [];
           return next;
         } catch (_) {
@@ -816,7 +830,7 @@
       }
 
       function totalSteps(s = state) {
-        return taskOrder.reduce((sum, id) => sum + s.counts[id], 0);
+        return taskOrder.reduce((sum, id) => sum + s.counts[id], 0) + (s.counts.mystery || 0);
       }
 
       function localDateKey(value) {
@@ -866,8 +880,8 @@
       let activeVoice = null;
       let backgroundStarted = false;
       let shouldResumeBackground = false;
-      const voiceBags = { island: [], sun: [], firework: [] };
-      const lastVoiceIndex = { island: -1, sun: -1, firework: -1 };
+      const voiceBags = { island: [], sun: [], firework: [], mystery: [] };
+      const lastVoiceIndex = { island: -1, sun: -1, firework: -1, mystery: -1 };
       const backgroundAudio = root.querySelector('#backgroundAudio');
       const backgroundTracks = JSON.parse(root.querySelector('#backgroundAudioList')?.textContent || '[]')
         .map(track => typeof track === 'string' ? { src: track, bytes: 0 } : track)
@@ -1080,6 +1094,7 @@
         voiceBags.island = [];
         voiceBags.sun = [];
         voiceBags.firework = [];
+        voiceBags.mystery = [];
       }
 
       function duckBackground(isDucked) {
@@ -1238,6 +1253,30 @@
         if (navigator.vibrate) navigator.vibrate(20);
       }
 
+      function checkMysteryBonus(sourceButton, point) {
+        const task = tasks.mystery;
+        if (state.counts.mystery >= task.goal) {
+          showToast('神秘岛今天的彩蛋已经收满啦');
+          return;
+        }
+
+        state.counts.mystery += 1;
+        state.logs.unshift({ taskId: 'mystery', at: new Date().toISOString() });
+        popStar(sourceButton, point);
+        playRandomVoice('mystery', playCheckinSound);
+        syncUnlocks();
+        saveState();
+        render();
+        showToast('神秘彩蛋 +1，小猪偷偷前进！');
+
+        if (sourceButton) {
+          sourceButton.classList.remove('is-bump');
+          void sourceButton.offsetWidth;
+          sourceButton.classList.add('is-bump');
+        }
+        if (navigator.vibrate) navigator.vibrate([18, 24, 18]);
+      }
+
       function undoLast() {
         const last = state.logs.shift();
         if (!last) return;
@@ -1334,6 +1373,11 @@
         const music = event.target.closest('[data-music-control]');
         if (music && root.contains(music)) {
           playMusicControl();
+          return;
+        }
+        const mystery = event.target.closest('[data-mystery-bonus]');
+        if (mystery && root.contains(mystery)) {
+          checkMysteryBonus(mystery, { clientX: event.clientX, clientY: event.clientY });
           return;
         }
         const scenery = event.target.closest('[data-scene]');

@@ -20,6 +20,7 @@ const assetNames = [
   'wobble-fun.webp',
   'wobble-finish.webp',
   'wobble-music.webp',
+  'wobble-mystery.webp',
   'music-speaker-left.webp',
   'music-speaker-right.webp',
   'real-dolphin.wav',
@@ -44,6 +45,7 @@ const doubleClickVoices = new Set([
   '9-38 Zonai Device Dispenser',
   '9-42 Korok Challenge Complete'
 ]);
+const mysteryClickVoices = new Set([...heavyClickVoices, ...doubleClickVoices]);
 
 let fragment = fs.readFileSync(fragmentPath, 'utf8');
 
@@ -81,7 +83,8 @@ const islandVoices = listVoiceFiles('Click Island');
 const sunVoices = listVoiceFiles('Click Sun');
 const fireworkVoices = listVoiceFiles('Firework');
 const backgroundVoices = listVoiceFiles('Background');
-const voices = `${voiceMarkup('island', islandVoices)}\n${voiceMarkup('sun', sunVoices)}\n${voiceMarkup('firework', fireworkVoices)}`;
+const mysteryVoices = islandVoices.filter(filePath => mysteryClickVoices.has(path.basename(filePath, path.extname(filePath))));
+const voices = `${voiceMarkup('island', islandVoices)}\n${voiceMarkup('sun', sunVoices)}\n${voiceMarkup('firework', fireworkVoices)}\n${voiceMarkup('mystery', mysteryVoices)}`;
 if (!fragment.includes('<!--VOICE_AUDIO_POOL-->')) throw new Error('Voice audio pool placeholder missing');
 fragment = fragment.replace('<!--VOICE_AUDIO_POOL-->', voices);
 if (!fragment.includes('<!--BACKGROUND_AUDIO_LIST-->')) throw new Error('Background audio placeholder missing');
@@ -297,4 +300,4 @@ self.addEventListener('message', event => {
 fs.writeFileSync(outputPath, document, 'utf8');
 fs.writeFileSync(path.join(projectRoot, 'manifest.webmanifest'), JSON.stringify(manifest, null, 2), 'utf8');
 fs.writeFileSync(path.join(projectRoot, 'service-worker.js'), serviceWorker, 'utf8');
-console.log(`${outputPath} (${islandVoices.length} island voices, ${sunVoices.length} sun voices, ${fireworkVoices.length} firework voices, ${backgroundVoices.length} background tracks, external assets)`);
+console.log(`${outputPath} (${islandVoices.length} island voices, ${sunVoices.length} sun voices, ${fireworkVoices.length} firework voices, ${mysteryVoices.length} mystery voices, ${backgroundVoices.length} background tracks, external assets)`);
