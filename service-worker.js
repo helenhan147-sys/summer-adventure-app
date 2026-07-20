@@ -1,4 +1,4 @@
-const APP_CACHE = 'summer-adventure-pwa-v1784541292458';
+const APP_CACHE = 'summer-adventure-pwa-v1784542783480';
 const MEDIA_CACHE = 'summer-adventure-media-v1';
 const SHELL_ASSETS = [
   "./",
